@@ -3,12 +3,12 @@
   "displayName": "ActionCode-BoxBody",
   "version": "0.1.0",
   "unity": "2019.3",
-  "description": "This package controls the GameObject position through physics body simulation.",
+  "description": "This package controls physical simulation for GameObject bodies using Raycasts.",
   "keywords": [
     "",
     ""
   ],
-  "category": "",
+  "category": "Physics",
   "dependencies": {},
   "license": "MIT",
   "homepage": "https://github.com/HyagoOliveira/BoxBody#readme",

@@ -1,6 +1,6 @@
 # Box Body
 
-* Controls the GameObject position through physics body simulation.
+* Physical simulation for GameObject bodies using Raycasts
 * Unity minimum version: **2019.3**
 * Current version: **0.1.0**
 * License: **MIT**
