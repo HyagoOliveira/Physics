@@ -1,0 +1,16 @@
+{
+    "name": "ActionCode.BoxBody",
+    "rootNamespace": "ActionCode.BoxBodies",
+    "references": [
+        "GUID:09275cd1284174a43bc0d48b89073298"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

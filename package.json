@@ -9,7 +9,9 @@
     ""
   ],
   "category": "Physics",
-  "dependencies": {},
+  "dependencies": {
+    "com.actioncode.collider-adapter": "2.0.0"
+  },
   "license": "MIT",
   "homepage": "https://github.com/HyagoOliveira/BoxBody#readme",
   "repository": {
