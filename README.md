@@ -6,6 +6,7 @@
 * License: **MIT**
 * Dependencies:
 	- [com.actioncode.collider-adapter : 2.0.0](https://github.com/HyagoOliveira/Collider-Adapter/tree/2.0.0)
+	- [com.actioncode.shapes : 1.2.0](https://github.com/HyagoOliveira/Shapes/tree/1.2.0)
 
 ## Summary
 
