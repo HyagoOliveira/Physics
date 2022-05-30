@@ -91,6 +91,24 @@ namespace ActionCode.BoxBodies
         public Vector3 CurrentPosition => currentPosition;
 
         /// <summary>
+        /// The current movement input from all axes.
+        /// </summary>
+        public Vector3 MoveInput
+        {
+            get => new Vector3(
+                Horizontal.MoveInput,
+                Vertical.MoveInput,
+                Distal.MoveInput
+            );
+            set
+            {
+                Distal.MoveInput = value.z;
+                Vertical.MoveInput = value.y;
+                Horizontal.MoveInput = value.x;
+            }
+        }
+
+        /// <summary>
         /// Whether is moving in any side.
         /// </summary>
         public bool IsMovingAnySide { get; private set; }
