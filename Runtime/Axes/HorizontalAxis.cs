@@ -42,7 +42,7 @@ namespace ActionCode.BoxBodies
         /// <summary>
         /// The current movement input on this axis.
         /// </summary>
-        public float MoveInput
+        public override float MoveInput
         {
             get => moveInput;
             set

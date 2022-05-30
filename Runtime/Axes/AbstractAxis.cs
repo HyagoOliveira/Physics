@@ -153,6 +153,11 @@ namespace ActionCode.BoxBodies
         /// The collision point after the last collisions calculations.
         /// </summary>
         public float CollisionPoint { get; private set; }
+
+        /// <summary>
+        /// The current movement input on this axis.
+        /// </summary>
+        public virtual float MoveInput { get; set; }
         #endregion
 
         protected IRaycastHit negativeHit;
