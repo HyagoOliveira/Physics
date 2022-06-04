@@ -183,7 +183,7 @@ namespace ActionCode.BoxBodies
             UpdateCollisions();
         }
 
-        public void UpdateCollisions()
+        private void UpdateCollisions()
         {
             if (Horizontal.ShouldRestrictPosition()) currentPosition.x = Horizontal.CollisionPoint;
             if (Vertical.ShouldRestrictPosition()) currentPosition.y = Vertical.CollisionPoint;
