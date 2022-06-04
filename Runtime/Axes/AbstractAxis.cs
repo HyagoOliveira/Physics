@@ -245,14 +245,13 @@ namespace ActionCode.BoxBodies
 
             UpdateCollisions();
             UpdateGravity();
-            UpdateMovement();
             RestrictMovement();
         }
 
         /// <summary>
-        /// Updates this axis movement.
+        /// Checks this axis movement.
         /// </summary>
-        internal void UpdateMovement()
+        internal void CheckMovement()
         {
             if (Enabled) CheckMovementActions();
         }
