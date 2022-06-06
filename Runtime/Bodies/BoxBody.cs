@@ -127,7 +127,7 @@ namespace ActionCode.BoxBodies
             InitializeAxes();
             currentPosition = transform.position;
         }
-        private void Update() => UpdateMovement();
+        private void Update() => CheckMovement();
         private void FixedUpdate() => UpdatePhysics();
         private void OnEnable() => AddAxesListeners();
         private void OnDisable() => RemoveAxesListeners();
@@ -181,6 +181,7 @@ namespace ActionCode.BoxBodies
             Distal.Update();
 
             UpdateCollisions();
+            UpdateMovement();
         }
 
         private void UpdateCollisions()
@@ -194,10 +195,15 @@ namespace ActionCode.BoxBodies
         {
             Velocity = new Vector3(Horizontal.Speed, Vertical.Speed, Distal.Speed) * Time.deltaTime;
             currentPosition += Velocity;
-            transform.position = currentPosition;
-            DeltaPosition = RemoveSmallValues(currentPosition - LastPosition);
 
+            transform.position = currentPosition;
+
+            DeltaPosition = RemoveSmallValues(currentPosition - LastPosition);
             IsMovingAnySide = DeltaPosition.sqrMagnitude > 0f;
+        }
+
+        private void CheckMovement()
+        {
             if (IsMovingAnySide)
             {
                 OnMoving?.Invoke();
