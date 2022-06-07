@@ -118,6 +118,16 @@ namespace ActionCode.BoxBodies
         /// </summary>
         public bool WasMovingAnySide { get; private set; }
 
+        /// <summary>
+        /// Whether is grounded.
+        /// </summary>
+        public bool IsGrounded => Vertical.IsCollisionDown();
+
+        /// <summary>
+        /// Whether is airborne.
+        /// </summary>
+        public bool IsAirborne => !Vertical.IsCollisionDown();
+
         private Vector3 currentPosition;
         private bool areAxesInitialized;
 
