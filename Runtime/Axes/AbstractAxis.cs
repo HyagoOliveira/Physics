@@ -205,6 +205,12 @@ namespace ActionCode.BoxBodies
         public bool CanMove() => !IsCollisionOnNegativeSide() || !IsCollisionOnPositiveSide();
 
         /// <summary>
+        /// Whether it has any move input.
+        /// </summary>
+        /// <returns>True if it has any move input. False otherwise.</returns>
+        public bool HasMoveInput() => Math.Abs(MoveInput) > 0F;
+
+        /// <summary>
         /// Whether can move in the given direction.
         /// </summary>
         /// <param name="direction">The direction to check.</param>
