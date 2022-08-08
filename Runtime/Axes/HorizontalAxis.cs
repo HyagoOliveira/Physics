@@ -97,6 +97,14 @@ namespace ActionCode.BoxBodies
         public bool IsCollisionRight() => IsCollisionOnPositiveSide();
 
         /// <summary>
+        /// Checks if facing colliding. Triggers don't count as a solid collision.
+        /// </summary>
+        /// <returns>True if facing colliding on right. False otherwise.</returns>
+        public bool IsFaceCollision() =>
+            FacingSide < 0F && IsCollisionLeft() ||
+            FacingSide > 0F && IsCollisionRight();
+
+        /// <summary>
         /// Check if moving leftwards.
         /// </summary>
         /// <returns>True if moving to left. False otherwise.</returns>
