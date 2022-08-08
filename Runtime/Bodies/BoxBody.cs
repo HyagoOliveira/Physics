@@ -163,6 +163,8 @@ namespace ActionCode.BoxBodies
         /// <returns>A Vector3 representing speeds.</returns>
         public Vector3 GetSpeeds() => new Vector3(Horizontal.Speed, Vertical.Speed, Distal.Speed);
 
+        internal void UpdateVelocity() => Velocity = GetSpeeds() * Time.deltaTime;
+
         private void FindCollider() => collider = AbstractColliderAdapter.ResolveCollider(gameObject);
 
         private void AddAxesListeners()
@@ -203,7 +205,7 @@ namespace ActionCode.BoxBodies
 
         private void UpdateMovement()
         {
-            Velocity = new Vector3(Horizontal.Speed, Vertical.Speed, Distal.Speed) * Time.deltaTime;
+            UpdateVelocity();
             currentPosition += Velocity;
 
             transform.position = currentPosition;

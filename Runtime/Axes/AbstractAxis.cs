@@ -249,6 +249,7 @@ namespace ActionCode.BoxBodies
         {
             if (!Enabled) return;
 
+            Body.UpdateVelocity();
             UpdateCollisions();
             UpdateGravity();
             RestrictMovement();
