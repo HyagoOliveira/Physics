@@ -128,6 +128,11 @@ namespace ActionCode.BoxBodies
         /// </summary>
         public bool IsAirborne => !Vertical.IsCollisionDown();
 
+        /// <summary>
+        /// Whether is has input from any axis.
+        /// </summary>
+        public bool IsMoveInputing => Mathf.Abs(MoveInput.sqrMagnitude) > 0f;
+
         private Vector3 currentPosition;
         private bool areAxesInitialized;
 
