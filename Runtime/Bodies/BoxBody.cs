@@ -193,8 +193,8 @@ namespace ActionCode.BoxBodies
             LastDeltaPosition = DeltaPosition;
             currentPosition = transform.position;
 
-            Horizontal.Update();
             Vertical.Update();
+            Horizontal.Update();
             Distal.Update();
 
             UpdateCollisions();
