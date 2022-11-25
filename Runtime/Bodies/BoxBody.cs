@@ -142,7 +142,6 @@ namespace ActionCode.BoxBodies
             InitializeAxes();
             currentPosition = transform.position;
         }
-        private void Update() => CheckMovement();
         private void FixedUpdate() => UpdatePhysics();
         private void OnEnable() => AddAxesListeners();
         private void OnDisable() => RemoveAxesListeners();
@@ -203,6 +202,7 @@ namespace ActionCode.BoxBodies
 
             UpdateCollisions();
             UpdateMovement();
+            CheckMovement();
         }
 
         private void UpdateCollisions()

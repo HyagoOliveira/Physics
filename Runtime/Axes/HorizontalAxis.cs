@@ -174,15 +174,14 @@ namespace ActionCode.BoxBodies
 
         protected override void CheckMovementActions()
         {
-            var wasHorizontallyMoving = Mathf.Abs(Body.LastDeltaPosition.x) > 0F;
-            var lastHorizontalMovementSign = Mathf.Sign(Body.LastDeltaPosition.x);
-            var wasMovingLeft = lastHorizontalMovementSign < 0f;
-            var wasMovingRight = lastHorizontalMovementSign > 0f;
+            var wasMovingLeft = Body.LastDeltaPosition.x < 0f;
+            var wasMovingRight = Body.LastDeltaPosition.x > 0f;
+
             var isMovingLeft = Body.DeltaPosition.x < 0F;
             var isMovingRight = Body.DeltaPosition.x > 0F;
 
-            var startMoveLeft = (!wasHorizontallyMoving || wasMovingRight) && isMovingLeft;
-            var startMoveRight = (!wasHorizontallyMoving || wasMovingLeft) && isMovingRight;
+            var startMoveLeft = !wasMovingLeft && isMovingLeft;
+            var startMoveRight = !wasMovingRight && isMovingRight;
 
             if (startMoveLeft) OnStartMoveLeft?.Invoke();
             else if (startMoveRight) OnStartMoveRight?.Invoke();

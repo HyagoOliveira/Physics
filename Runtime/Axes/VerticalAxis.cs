@@ -116,15 +116,14 @@ namespace ActionCode.BoxBodies
 
         protected override void CheckMovementActions()
         {
-            var wasVerticallyMoving = Mathf.Abs(Body.LastDeltaPosition.y) > 0F;
-            var lastVerticalMovementSign = Mathf.Sign(Body.LastDeltaPosition.y);
-            var wasMovingUp = lastVerticalMovementSign > 0f;
-            var wasMovingDown = lastVerticalMovementSign < 0f;
+            var wasMovingUp = Body.LastDeltaPosition.y > 0f;
+            var wasMovingDown = Body.LastDeltaPosition.y < 0f;
+
             var isMovingUp = Body.DeltaPosition.y > 0F;
             var isMovingDown = Body.DeltaPosition.y < 0F;
 
-            var startMoveUp = (!wasVerticallyMoving || wasMovingDown) && isMovingUp;
-            var startMoveDown = (!wasVerticallyMoving || wasMovingUp) && isMovingDown;
+            var startMoveUp = !wasMovingUp && isMovingUp;
+            var startMoveDown = !wasMovingDown && isMovingDown;
 
             if (startMoveUp) OnStartMoveUp?.Invoke();
             else if (startMoveDown) OnStartMoveDown?.Invoke();
