@@ -193,6 +193,10 @@ namespace ActionCode.BoxBodies
             LastDeltaPosition = DeltaPosition;
             currentPosition = transform.position;
 
+            Horizontal.StopSpeedIfMovingIntoCollision();
+            Vertical.StopSpeedIfMovingIntoCollision();
+            Distal.StopSpeedIfMovingIntoCollision();
+
             Vertical.Update();
             Horizontal.Update();
             Distal.Update();

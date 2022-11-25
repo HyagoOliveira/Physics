@@ -264,6 +264,17 @@ namespace ActionCode.BoxBodies
         }
 
         /// <summary>
+        /// Stops the current Speed if moving into collision.
+        /// </summary>
+        internal void StopSpeedIfMovingIntoCollision()
+        {
+            var isMovingToCollision =
+                IsCollisionOnPositiveSide() && IsMovingToPositiveSide() ||
+                IsCollisionOnNegativeSide() && IsMovingToNegativeSide();
+            if (isMovingToCollision) StopSpeed();
+        }
+
+        /// <summary>
         /// Checks if is necessary to restrict the axis position using the last collisions.
         /// </summary>
         /// <returns>True if necessary to restrict the axis position. False otherwise.</returns>
