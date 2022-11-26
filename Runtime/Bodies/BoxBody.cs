@@ -119,6 +119,11 @@ namespace ActionCode.BoxBodies
         public bool WasMovingAnySide { get; private set; }
 
         /// <summary>
+        /// Whether was grounded in the last frame.
+        /// </summary>
+        public bool WasGrounded { get; private set; }
+
+        /// <summary>
         /// Whether is grounded.
         /// </summary>
         public bool IsGrounded => Vertical.IsCollisionDown();
@@ -187,6 +192,7 @@ namespace ActionCode.BoxBodies
 
         private void UpdatePhysics()
         {
+            WasGrounded = IsGrounded;
             LastPosition = currentPosition;
             WasMovingAnySide = IsMovingAnySide;
             LastDeltaPosition = DeltaPosition;
