@@ -325,8 +325,8 @@ namespace ActionCode.BoxBodies
         protected bool IsCollisionOnNegativeSide() => isNegativeCollision;
         protected bool IsCollisionOnPositiveSide() => isPositiveCollision;
 
-        protected bool IsMovingToNegativeSide() => Speed < 0F || GetDeltaMovement() < 0F;
-        protected bool IsMovingToPositiveSide() => Speed > 0F || GetDeltaMovement() > 0F;
+        protected bool IsMovingToNegativeSide() => Speed < 0F;
+        protected bool IsMovingToPositiveSide() => Speed > 0F;
 
         protected bool IsGravityPositive() => Gravity > 0F;
         protected bool IsGravityNegative() => Gravity < 0F;
