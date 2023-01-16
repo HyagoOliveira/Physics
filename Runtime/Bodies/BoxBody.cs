@@ -147,7 +147,7 @@ namespace ActionCode.BoxBodies
             InitializeAxes();
             currentPosition = transform.position;
         }
-        private void FixedUpdate() => UpdatePhysics();
+        private void Update() => UpdatePhysics();
         private void OnEnable() => AddAxesListeners();
         private void OnDisable() => RemoveAxesListeners();
         private void OnValidate() => ValidateAxes();
@@ -170,7 +170,7 @@ namespace ActionCode.BoxBodies
         /// <para>This vector is not multiplied by DeltaTime.</para>
         /// </summary>
         /// <returns>A Vector3 representing speeds.</returns>
-        public Vector3 GetSpeeds() => new Vector3(Horizontal.Speed, Vertical.Speed, Distal.Speed);
+        public Vector3 GetSpeeds() => new(Horizontal.Speed, Vertical.Speed, Distal.Speed);
 
         internal void UpdateVelocity() => Velocity = GetSpeeds() * Time.deltaTime;
 
@@ -202,16 +202,18 @@ namespace ActionCode.BoxBodies
             Vertical.StopSpeedIfMovingIntoCollision();
             Distal.StopSpeedIfMovingIntoCollision();
 
+            UpdateVelocity();
+
             Vertical.Update();
             Horizontal.Update();
             Distal.Update();
 
-            UpdateCollisions();
+            RestrictCollisions();
             UpdateMovement();
             CheckMovement();
         }
 
-        private void UpdateCollisions()
+        private void RestrictCollisions()
         {
             if (Horizontal.ShouldRestrictPosition()) currentPosition.x = Horizontal.CollisionPoint;
             if (Vertical.ShouldRestrictPosition()) currentPosition.y = Vertical.CollisionPoint;
@@ -220,7 +222,7 @@ namespace ActionCode.BoxBodies
 
         private void UpdateMovement()
         {
-            UpdateVelocity();
+            //UpdateVelocity();
             currentPosition += Velocity;
 
             transform.position = currentPosition;
