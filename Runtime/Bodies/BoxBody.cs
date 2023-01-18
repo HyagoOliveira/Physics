@@ -140,6 +140,7 @@ namespace ActionCode.BoxBodies
 
         private Vector3 currentPosition;
         private bool areAxesInitialized;
+        private MovingPlatform lastMovingPlatform;
 
         private void Reset() => FindCollider();
         private void Awake()
@@ -147,7 +148,8 @@ namespace ActionCode.BoxBodies
             InitializeAxes();
             currentPosition = transform.position;
         }
-        private void Update() => UpdatePhysics();
+        private void FixedUpdate() => UpdatePhysics();
+        private void LateUpdate() => UpdateMovingPlatform();
         private void OnEnable() => AddAxesListeners();
         private void OnDisable() => RemoveAxesListeners();
         private void OnValidate() => ValidateAxes();
@@ -218,6 +220,24 @@ namespace ActionCode.BoxBodies
             if (Horizontal.ShouldRestrictPosition()) currentPosition.x = Horizontal.CollisionPoint;
             if (Vertical.ShouldRestrictPosition()) currentPosition.y = Vertical.CollisionPoint;
             if (Distal.ShouldRestrictPosition()) currentPosition.z = Distal.CollisionPoint;
+        }
+
+        public bool IsOverMovingPlatform() => lastMovingPlatform != null;
+
+        private void UpdateMovingPlatform()
+        {
+            var hasFarHit =
+                Vertical.UpdateFarBottomCollisions(out IRaycastHit hit) &&
+                hit.Transform.TryGetComponent(out lastMovingPlatform);
+
+            if (!hasFarHit)
+            {
+                lastMovingPlatform = null;
+                return;
+            }
+
+            transform.position = lastMovingPlatform.
+                GetSurfacePositionRelativeFrom(transform.position);
         }
 
         private void UpdateMovement()

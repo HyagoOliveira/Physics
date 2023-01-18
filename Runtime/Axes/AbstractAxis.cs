@@ -337,6 +337,7 @@ namespace ActionCode.BoxBodies
 
         private void UpdateGravity()
         {
+            if (Body.IsOverMovingPlatform()) return;
             var updateNegativeGravity = GravityEnabled &&
                 IsGravityNegative() && !IsCollisionOnNegativeSide() ||
                 IsGravityPositive() && !IsCollisionOnPositiveSide();

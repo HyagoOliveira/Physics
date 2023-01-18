@@ -51,6 +51,15 @@ namespace ActionCode.BoxBodies
 
         public VerticalAxis() => Gravity = Physics.gravity.y;
 
+        public bool UpdateFarBottomCollisions(out IRaycastHit hit)
+        {
+            var points = GetCollisionPoints();
+            var distance = GetHalfSize() + 0.25F;
+
+            return Body.Collider.Raycasts(points.one, points.two, Vector3.down,
+                out hit, distance, Collisions, SlopeLimit, RaysCount, DrawCollisions);
+        }
+
         public override bool CanMove(Vector3 direction)
         {
             return
