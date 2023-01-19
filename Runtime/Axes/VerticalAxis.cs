@@ -120,8 +120,8 @@ namespace ActionCode.BoxBodies
         protected override float GetCollisionPointOnNegativeSide() => BottomHit.Point.y + GetHalfSize() - Body.Collider.Offset.y;
         protected override float GetCollisionPointOnPositiveSide() => TopHit.Point.y - GetHalfSize() - Body.Collider.Offset.y;
 
-        protected override void RaiseOnHitNegativeSide() => OnHitBottom?.Invoke();
-        protected override void RaiseOnHitPositiveSide() => OnHitTop?.Invoke();
+        protected override void InvokeOnHitNegativeSide() => OnHitBottom?.Invoke();
+        protected override void InvokeOnHitPositiveSide() => OnHitTop?.Invoke();
 
         protected override void CheckMovementActions()
         {

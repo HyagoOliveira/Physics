@@ -316,8 +316,8 @@ namespace ActionCode.BoxBodies
         protected abstract float GetCollisionPointOnNegativeSide();
         protected abstract float GetCollisionPointOnPositiveSide();
 
-        protected abstract void RaiseOnHitNegativeSide();
-        protected abstract void RaiseOnHitPositiveSide();
+        protected abstract void InvokeOnHitNegativeSide();
+        protected abstract void InvokeOnHitPositiveSide();
 
         protected abstract void CheckMovementActions();
 
@@ -333,7 +333,7 @@ namespace ActionCode.BoxBodies
         protected bool IsPushingColliderOnNegativeSide() => IsMovingToNegativeSide() && IsCollisionOnNegativeSide();
         protected bool IsPushingColliderOnPositiveSide() => IsMovingToPositiveSide() && IsCollisionOnPositiveSide();
 
-        protected void RaiseOnHitAnySide() => OnHitAnySide?.Invoke();
+        protected void InvokeOnHitAnySide() => OnHitAnySide?.Invoke();
 
         private void UpdateGravity()
         {
@@ -354,8 +354,8 @@ namespace ActionCode.BoxBodies
                 if (IsMovingToNegativeSide())
                 {
                     StopSpeed();
-                    RaiseOnHitAnySide();
-                    RaiseOnHitNegativeSide();
+                    InvokeOnHitAnySide();
+                    InvokeOnHitNegativeSide();
                 }
             }
 
@@ -365,8 +365,8 @@ namespace ActionCode.BoxBodies
                 if (IsMovingToPositiveSide())
                 {
                     StopSpeed();
-                    RaiseOnHitAnySide();
-                    RaiseOnHitPositiveSide();
+                    InvokeOnHitAnySide();
+                    InvokeOnHitPositiveSide();
                 }
             }
         }
