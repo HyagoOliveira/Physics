@@ -1,14 +1,14 @@
 using System;
 using UnityEngine;
 
-namespace ActionCode.BoxBodies
+namespace ActionCode.Physics
 {
     /// <summary>
     /// Distal Axis (forward/backward direction) used by <see cref="BoxBody"/> component.
     /// </summary>
     [Serializable]
-    public sealed class DistalAxis : AbstractAxis
-    {
+    public sealed class DistalAxis //: AbstractAxis
+    {/*
         /// <summary>
         /// Action fired when the Box stops after colliding using the forward side.
         /// </summary>
@@ -145,6 +145,6 @@ namespace ActionCode.BoxBodies
             bottomCenter += upOffset;
 
             return (topCenter, bottomCenter);
-        }
+        }*/
     }
 }

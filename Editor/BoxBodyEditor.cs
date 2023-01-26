@@ -2,8 +2,14 @@ using UnityEditor;
 using UnityEngine;
 using ActionCode.Shapes;
 
-namespace ActionCode.BoxBodies.Editor
+namespace ActionCode.Physics.Editor
 {
+    /// <summary>
+    /// Custom Editor for <see cref="BoxBody"/>.
+    /// <para>
+    /// It draws all current axis collisions if the axis is expanded on the Inspector window.
+    /// </para>
+    /// </summary>
     [CustomEditor(typeof(BoxBody))]
     public sealed class BoxBodyEditor : UnityEditor.Editor
     {
@@ -26,15 +32,14 @@ namespace ActionCode.BoxBodies.Editor
 
         private void OnSceneGUI()
         {
-            body.InitializeAxes();
             DrawCurrentCollisions();
             DrawRaycastCollisions();
         }
 
         private void DrawCurrentCollisions()
         {
-            if (body.Distal.IsForwardCollision()) DrawDistalCollision(Vector3.forward);
-            if (body.Distal.IsBackwardCollision()) DrawDistalCollision(Vector3.back);
+            //if (body.Distal.IsForwardCollision()) DrawDistalCollision(Vector3.forward);
+            //if (body.Distal.IsBackwardCollision()) DrawDistalCollision(Vector3.back);
 
             if (body.Horizontal.IsCollisionRight()) DrawHorizontalCollision(Vector3.right);
             if (body.Horizontal.IsCollisionLeft()) DrawHorizontalCollision(Vector3.left);
@@ -45,13 +50,13 @@ namespace ActionCode.BoxBodies.Editor
 
         private void DrawRaycastCollisions()
         {
-            body.Distal.DrawCollisions = distalAxis.isExpanded;
+            //body.Distal.DrawCollisions = distalAxis.isExpanded;
             body.Vertical.DrawCollisions = verticalAxis.isExpanded;
             body.Horizontal.DrawCollisions = horizontalAxis.isExpanded;
 
             if (!Application.isPlaying)
             {
-                body.Distal.UpdateCollisions();
+                //body.Distal.UpdateCollisions();
                 body.Vertical.UpdateCollisions();
                 body.Horizontal.UpdateCollisions();
             }

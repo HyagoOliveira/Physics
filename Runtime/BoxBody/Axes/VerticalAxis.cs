@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ActionCode.BoxBodies
+namespace ActionCode.Physics
 {
     /// <summary>
     /// Vertical Axis used by <see cref="BoxBody"/> component.
@@ -9,6 +9,9 @@ namespace ActionCode.BoxBodies
     [Serializable]
     public sealed class VerticalAxis : AbstractAxis
     {
+        private readonly Quaternion upRotation = Quaternion.identity;
+        private readonly Quaternion downRotation = Quaternion.Euler(Vector3.right * -180F);
+
         /// <summary>
         /// Action fired when the Box stops after colliding using the top side.
         /// </summary>
@@ -20,26 +23,6 @@ namespace ActionCode.BoxBodies
         public event Action OnHitBottom;
 
         /// <summary>
-        /// Action fired when the Box starts to move up.
-        /// </summary>
-        public event Action OnStartMoveUp;
-
-        /// <summary>
-        /// Action fired when the Box starts to move down.
-        /// </summary>
-        public event Action OnStartMoveDown;
-
-        /// <summary>
-        /// Action fired when the Box is moving up.
-        /// </summary>
-        public event Action OnMovingUp;
-
-        /// <summary>
-        /// Action fired when the Box is moving down.
-        /// </summary>
-        public event Action OnMovingDown;
-
-        /// <summary>
         /// Raycast information from the last top hit.
         /// </summary>
         public IRaycastHit TopHit => positiveHit;
@@ -48,17 +31,6 @@ namespace ActionCode.BoxBodies
         /// Raycast information from the last bottom hit.
         /// </summary>
         public IRaycastHit BottomHit => negativeHit;
-
-        public VerticalAxis() => Gravity = Physics.gravity.y;
-
-        public bool UpdateFarBottomCollisions(out IRaycastHit hit)
-        {
-            var points = GetCollisionPoints();
-            var distance = GetHalfSize() + 0.25F;
-
-            return Body.Collider.Raycasts(points.one, points.two, Vector3.down,
-                out hit, distance, Collisions, SlopeLimit, RaysCount, DrawCollisions);
-        }
 
         public override bool CanMove(Vector3 direction)
         {
@@ -107,55 +79,68 @@ namespace ActionCode.BoxBodies
         /// Check if gravity is pointing to up.
         /// </summary>
         /// <returns>True if gravity is pointing to right. False otherwise.</returns>
-        public bool IsGravityUp() => IsGravityPositive();
+        public bool IsGravityUp() => Gravity > 0F;
 
         /// <summary>
         /// Check if gravity is pointing to down.
         /// </summary>
         /// <returns>True if gravity is pointing to left. False otherwise.</returns>
-        public bool IsGravityDown() => IsGravityNegative();
+        public bool IsGravityDown() => Gravity < 0F;
 
-        protected override float GetHalfSize() => Body.Collider.HalfSize.y;
-        protected override float GetDeltaMovement() => Body.DeltaPosition.y;
-        protected override float GetCollisionPointOnNegativeSide() => BottomHit.Point.y + GetHalfSize() - Body.Collider.Offset.y;
-        protected override float GetCollisionPointOnPositiveSide() => TopHit.Point.y - GetHalfSize() - Body.Collider.Offset.y;
+        /// <summary>
+        /// Rotates to up.
+        /// </summary>
+        public void RotateToUp() => Body.transform.rotation = upRotation;
+
+        /// <summary>
+        /// Rotates to down.
+        /// </summary>
+        public void RotateToDown() => Body.transform.rotation = downRotation;
+
+        internal override void Reset(BoxBody body)
+        {
+            base.Reset(body);
+            UseGravity = true;
+            Gravity = Physics2D.gravity.y;
+        }
+
+        internal override void UpdateMovingPlatformPoint(ref float point)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override float GetHalfScale() => Body.Collider.HalfSize.y;
+        protected override float GetOutOfCollisionPointOnNegativeSide() => BottomHit.Point.y + GetHalfScale() - Body.Collider.Offset.y;
+        protected override float GetOutOfCollisionPointOnPositiveSide() => TopHit.Point.y - GetHalfScale() - Body.Collider.Offset.y;
 
         protected override void InvokeOnHitNegativeSide() => OnHitBottom?.Invoke();
         protected override void InvokeOnHitPositiveSide() => OnHitTop?.Invoke();
 
-        protected override void CheckMovementActions()
-        {
-            var wasMovingUp = Body.LastDeltaPosition.y > 0f;
-            var wasMovingDown = Body.LastDeltaPosition.y < 0f;
-
-            var isMovingUp = Body.DeltaPosition.y > 0F;
-            var isMovingDown = Body.DeltaPosition.y < 0F;
-
-            var startMoveUp = !wasMovingUp && isMovingUp;
-            var startMoveDown = !wasMovingDown && isMovingDown;
-
-            if (startMoveUp) OnStartMoveUp?.Invoke();
-            else if (startMoveDown) OnStartMoveDown?.Invoke();
-
-            if (isMovingUp) OnMovingUp?.Invoke();
-            else if (isMovingDown) OnMovingDown?.Invoke();
-        }
-
         protected override Vector3 GetPositiveDirection() => Vector3.up;
+
         protected override (Vector3 one, Vector3 two) GetCollisionPoints()
         {
             var bounds = Body.Collider.Bounds;
             var middleCenter = bounds.center;
             var leftCenter = new Vector3(bounds.min.x, middleCenter.y, middleCenter.z);
             var rightCenter = new Vector3(bounds.max.x, middleCenter.y, middleCenter.z);
-
-            var leftOffset = Vector3.left * Offset + Body.Velocity;
-            var rightOffset = Vector3.right * Offset + Body.Velocity;
+            var leftOffset = Vector3.left * Offset;
+            var rightOffset = Vector3.right * Offset;
 
             leftCenter += rightOffset;
             rightCenter += leftOffset;
 
             return (leftCenter, rightCenter);
+        }
+
+        protected override void RotateToPositiveSide() => RotateToUp();
+        protected override void RotateToNegativeSide() => RotateToDown();
+
+        protected override void SetCollisionPoint(float point) => Body.currentPosition.y = point;
+
+        protected override bool ShouldLeaveMovingPlatform()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

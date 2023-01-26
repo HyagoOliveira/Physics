@@ -1,6 +1,7 @@
 using UnityEngine;
+using ActionCode.ColliderAdapter;
 
-namespace ActionCode.BoxBodies
+namespace ActionCode.Physics
 {
     /// <summary>
     /// Component for a Moving Platform.
@@ -12,16 +13,33 @@ namespace ActionCode.BoxBodies
     [DisallowMultipleComponent]
     public sealed class MovingPlatform : MonoBehaviour
     {
-        [SerializeField, Tooltip("The platform vertical offset. Change it to fit into the platform surface.")]
-        private float verticalOffset;
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
+        public AbstractColliderAdapter collider;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
-        private void Reset() => UpdateVerticalOffsetToColliderTopPosition();
+        public Vector3 Position => transform.position;
+        public Vector3 Direction { get; private set; }
+
+        private Vector3 lastPosition;
+
+        private void Reset() => collider = AbstractColliderAdapter.ResolveCollider(gameObject);
+
+        private void Update()
+        {
+            Direction = (transform.position - lastPosition).normalized;
+            lastPosition = transform.position;
+        }
 
         /// <summary>
         /// Gets the top center position in the Platform surface.
         /// </summary>
         /// <returns>Always a <see cref="Vector3"/> instance.</returns>
-        public Vector3 GetSurfacePosition() => transform.position + Vector3.up * verticalOffset;
+        public Vector3 GetSurfacePosition()
+        {
+            var position = collider.Center;
+            position.y = collider.Bounds.max.y;
+            return position;
+        }
 
         /// <summary>
         /// Gets the top center position in the Platform surface relative from th given position
@@ -42,21 +60,6 @@ namespace ActionCode.BoxBodies
             return position;
         }
 
-        private void OnDrawGizmosSelected() => GetSurfacePosition().Draw(Color.red, size: 0.4F);
-
-        private void UpdateVerticalOffsetToColliderTopPosition()
-        {
-            var height = 0F;
-            var collider3D = GetComponent<Collider>();
-
-            if (collider3D) height = collider3D.bounds.size.y;
-            else
-            {
-                var collider2D = GetComponent<Collider2D>();
-                if (collider2D) height = collider2D.bounds.size.y;
-            }
-
-            verticalOffset = Mathf.Abs(height) * 0.5F;
-        }
+        public float GetSidePointRelativeFrom(float side) => Position.x + side * collider.HalfSize.x;
     }
 }

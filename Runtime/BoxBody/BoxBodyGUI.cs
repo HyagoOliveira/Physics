@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ActionCode.BoxBodies
+namespace ActionCode.Physics
 {
     [ExecuteAlways]
     [DisallowMultipleComponent]
@@ -21,12 +21,10 @@ namespace ActionCode.BoxBodies
             if (body == null) return;
             if (style == null) SetupStyle();
 
-            body.InitializeAxes();
-
             GUI.BeginGroup(area, title, new GUIStyle("Box"));
             lines = 1;
 
-            DrawValue("Facing", body.Horizontal.FacingSide);
+            DrawValue("Facing", body.Horizontal.Facing);
             DrawValue("Gravity", body.Vertical.Gravity);
             DrawValue("Speed", body.GetSpeeds());
             DrawValue("Velocity", body.Velocity);
