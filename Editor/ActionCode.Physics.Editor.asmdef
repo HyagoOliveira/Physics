@@ -1,9 +1,9 @@
 {
-    "name": "ActionCode.BoxBody.Editor",
-    "rootNamespace": "ActionCode.BoxBodies.Editor",
+    "name": "ActionCode.Physics.Editor",
+    "rootNamespace": "ActionCode.Physics.Editor",
     "references": [
-        "GUID:d989ee66b9b10ce4f97712c0ddd5a8c9",
         "GUID:09275cd1284174a43bc0d48b89073298",
+        "GUID:d989ee66b9b10ce4f97712c0ddd5a8c9",
         "GUID:b40514ddb87a6f1488fbddd18d66b949"
     ],
     "includePlatforms": [

@@ -1,6 +1,6 @@
 {
-    "name": "ActionCode.BoxBody",
-    "rootNamespace": "ActionCode.BoxBodies",
+    "name": "ActionCode.Physics",
+    "rootNamespace": "ActionCode.Physics",
     "references": [
         "GUID:09275cd1284174a43bc0d48b89073298",
         "GUID:b40514ddb87a6f1488fbddd18d66b949"

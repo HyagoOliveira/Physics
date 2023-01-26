@@ -1,6 +1,6 @@
 {
-  "name": "com.actioncode.box-body",
-  "displayName": "ActionCode-BoxBody",
+  "name": "com.actioncode.physics",
+  "displayName": "ActionCode-Physics",
   "version": "0.1.0",
   "unity": "2019.3",
   "description": "This package controls physical simulation for GameObject bodies using Raycasts.",
@@ -14,13 +14,13 @@
     "com.actioncode.shapes": "1.2.0"
   },
   "license": "MIT",
-  "homepage": "https://github.com/HyagoOliveira/BoxBody#readme",
+  "homepage": "https://github.com/HyagoOliveira/Physics#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HyagoOliveira/BoxBody.git"
+    "url": "https://github.com/HyagoOliveira/Physics.git"
   },
-  "documentationUrl": "https://github.com/HyagoOliveira/BoxBody#readme",
-  "changelogUrl": "https://github.com/HyagoOliveira/BoxBody/CHANGELOG.md",
+  "documentationUrl": "https://github.com/HyagoOliveira/Physics#readme",
+  "changelogUrl": "https://github.com/HyagoOliveira/Physics/CHANGELOG.md",
   "author": {
     "name": "Hyago Oliveira",
     "email": "hyagogow@gmail.com"
