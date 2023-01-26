@@ -180,16 +180,16 @@ namespace ActionCode.BoxBodies
 
         private void AddAxesListeners()
         {
-            Horizontal.OnHitAnySide += RaiseOnHitAnySide;
-            Vertical.OnHitAnySide += RaiseOnHitAnySide;
-            Distal.OnHitAnySide += RaiseOnHitAnySide;
+            Horizontal.OnHitAnySide += InvokeOnHitAnySide;
+            Vertical.OnHitAnySide += InvokeOnHitAnySide;
+            Distal.OnHitAnySide += InvokeOnHitAnySide;
         }
 
         private void RemoveAxesListeners()
         {
-            Horizontal.OnHitAnySide -= RaiseOnHitAnySide;
-            Vertical.OnHitAnySide -= RaiseOnHitAnySide;
-            Distal.OnHitAnySide -= RaiseOnHitAnySide;
+            Horizontal.OnHitAnySide -= InvokeOnHitAnySide;
+            Vertical.OnHitAnySide -= InvokeOnHitAnySide;
+            Distal.OnHitAnySide -= InvokeOnHitAnySide;
         }
 
         private void UpdatePhysics()
@@ -270,7 +270,7 @@ namespace ActionCode.BoxBodies
             horizontal?.ValidateFields();
         }
 
-        private void RaiseOnHitAnySide() => OnHitAnySide?.Invoke();
+        private void InvokeOnHitAnySide() => OnHitAnySide?.Invoke();
 
         private void ResetDistalFields() => distal = new DistalAxis();
         private void ResetVerticalFields() => vertical = new VerticalAxis();
