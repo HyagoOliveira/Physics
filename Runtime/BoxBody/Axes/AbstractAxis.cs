@@ -17,8 +17,6 @@ namespace ActionCode.Physics
         private float gravity;
         [SerializeField, Min(0f), Tooltip("The maximum speed allowed. Should always be positive.")]
         private float maxSpeed = 50f;
-        [SerializeField, Tooltip("Raycast offset. It changes the raycast origin positions.")]
-        private float offset = 0.001f;
         [SerializeField, Range(0f, MAX_SLOPE_LIMIT), Tooltip("The maximum angle limit (in degrees) of a slope.")]
         private float slopeLimit = 0F;
         [SerializeField, Min(MIN_RAYS_COUNT), Tooltip("The number of raycasts for this axis.")]
@@ -41,6 +39,11 @@ namespace ActionCode.Physics
         /// The default collision skin.
         /// </summary>
         public const float COLLISION_SKIN = 0.0001F;
+
+        /// <summary>
+        /// The default collision offset.
+        /// </summary>
+        public const float COLLISION_OFFSET = 0.0075f;
 
         /// <summary>
         /// Minimum allowed rays.
@@ -144,15 +147,6 @@ namespace ActionCode.Physics
         }
 
         /// <summary>
-        /// Raycast offset. It changes the raycast origin positions
-        /// </summary>
-        public float Offset
-        {
-            get => offset;
-            set => offset = Mathf.Clamp(value, -GetHalfScale(), GetHalfScale());
-        }
-
-        /// <summary>
         /// The maximum angle limit (in degrees) of a slope.
         /// </summary>
         public float SlopeLimit
@@ -187,7 +181,7 @@ namespace ActionCode.Physics
         protected IRaycastHit negativeHit;
         protected IRaycastHit positiveHit;
 
-        protected MovingPlatform platform;
+        public MovingPlatform platform;
 
         private bool isNegativeCollision;
         private bool isPositiveCollision;
@@ -197,15 +191,7 @@ namespace ActionCode.Physics
 
         internal virtual void Reset(BoxBody body) => this.body = body;
 
-        internal void Validate()
-        {
-            RaysCount = raysCount;
-            var canValidateOffset =
-                Body != null &&
-                Body.Collider != null &&
-                Body.gameObject.activeInHierarchy;
-            if (canValidateOffset) Offset = offset;
-        }
+        internal void Validate() => RaysCount = raysCount;
 
         /// <summary>
         /// Whether has speed. 

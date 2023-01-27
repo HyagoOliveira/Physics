@@ -128,8 +128,8 @@ namespace ActionCode.Physics
             var middleCenter = bounds.center;
             var topCenter = new Vector3(middleCenter.x, bounds.max.y, middleCenter.z);
             var bottomCenter = new Vector3(middleCenter.x, bounds.min.y, middleCenter.z);
-            var upOffset = Vector3.up * Offset;
-            var downOffset = Vector3.down * Offset;
+            var upOffset = Vector3.up * COLLISION_OFFSET;
+            var downOffset = Vector3.down * COLLISION_OFFSET;
 
             topCenter += downOffset;
             bottomCenter += upOffset;

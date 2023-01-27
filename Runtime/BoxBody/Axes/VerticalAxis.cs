@@ -119,8 +119,8 @@ namespace ActionCode.Physics
             var middleCenter = bounds.center;
             var leftCenter = new Vector3(bounds.min.x, middleCenter.y, middleCenter.z);
             var rightCenter = new Vector3(bounds.max.x, middleCenter.y, middleCenter.z);
-            var leftOffset = Vector3.left * Offset;
-            var rightOffset = Vector3.right * Offset;
+            var leftOffset = Vector3.left * COLLISION_OFFSET;
+            var rightOffset = Vector3.right * COLLISION_OFFSET;
 
             leftCenter += rightOffset;
             rightCenter += leftOffset;
