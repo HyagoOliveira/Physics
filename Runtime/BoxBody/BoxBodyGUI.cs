@@ -9,7 +9,7 @@ namespace ActionCode.Physics
     {
         public BoxBody body;
         public string title = "BoxBody";
-        public Rect area = new Rect(60f, 30f, 190f, 106f);
+        public Rect area = new Rect(60f, 30f, 220f, 120f);
 
         private int lines;
         private GUIStyle style;

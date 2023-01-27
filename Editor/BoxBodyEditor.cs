@@ -32,6 +32,8 @@ namespace ActionCode.Physics.Editor
 
         private void OnSceneGUI()
         {
+            if (body.Collider == null) return;
+
             DrawCurrentCollisions();
             DrawRaycastCollisions();
         }
