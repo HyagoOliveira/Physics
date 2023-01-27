@@ -181,7 +181,7 @@ namespace ActionCode.Physics
         protected IRaycastHit negativeHit;
         protected IRaycastHit positiveHit;
 
-        public MovingPlatform platform;
+        protected MovingPlatform platform;
 
         private bool isNegativeCollision;
         private bool isPositiveCollision;

@@ -28,9 +28,9 @@ namespace ActionCode.Physics
         [ContextMenuItem("Reset", nameof(ResetVertical))]
         private VerticalAxis vertical;
 
-        /*[SerializeField, Tooltip("The distal (forward/backward) axis.")]
-        [ContextMenuItem("Reset", "nameof(ResetDistal)")]
-        private DistalAxis distal;*/
+        [SerializeField, Tooltip("The distal (forward/backward) axis.")]
+        [ContextMenuItem("Reset", nameof(ResetDistal))]
+        private DistalAxis distal;
 
         #region Events
         /// <summary>
@@ -60,7 +60,7 @@ namespace ActionCode.Physics
         /// <summary>
         /// The distal (forward/backward) axis.
         /// </summary>
-        //public DistalAxis Distal => distal;
+        public DistalAxis Distal => distal;
         #endregion
 
         /// <summary>
@@ -104,7 +104,8 @@ namespace ActionCode.Physics
         private void Reset()
         {
             collider = AbstractColliderAdapter.ResolveCollider(gameObject);
-            //ResetDistal();
+
+            ResetDistal();
             ResetVertical();
             ResetHorizontal();
         }
@@ -122,14 +123,14 @@ namespace ActionCode.Physics
             return new Vector3(
                 Horizontal.Speed,
                 Vertical.Speed,
-                /*Distal.Speed*/ 0F
+                Distal.Speed
             );
         }
 
         public bool IsUsingMovingPlatform() =>
             Vertical.IsEnabledAndUsingMovingPlatform() ||
-            Horizontal.IsEnabledAndUsingMovingPlatform();
-        //Distal.IsEnabledAndUsingMovingPlatform()
+            Horizontal.IsEnabledAndUsingMovingPlatform() ||
+            Distal.IsEnabledAndUsingMovingPlatform();
 
         private void UpdatePhysics()
         {
@@ -148,21 +149,21 @@ namespace ActionCode.Physics
         {
             Horizontal.OnHitAnySide += InvokeOnHitAnySide;
             Vertical.OnHitAnySide += InvokeOnHitAnySide;
-            //Distal.OnHitAnySide += InvokeOnHitAnySide;
+            Distal.OnHitAnySide += InvokeOnHitAnySide;
         }
 
         private void RemoveAxesListeners()
         {
             Horizontal.OnHitAnySide -= InvokeOnHitAnySide;
             Vertical.OnHitAnySide -= InvokeOnHitAnySide;
-            //Distal.OnHitAnySide -= InvokeOnHitAnySide;
+            Distal.OnHitAnySide -= InvokeOnHitAnySide;
         }
 
         private void ValidateAxes()
         {
             Horizontal.Validate();
             Vertical.Validate();
-            //Distal.Validate();
+            Distal.Validate();
         }
 
         private void UpdateVelocity() => Velocity = GetSpeeds() * Time.deltaTime;
@@ -171,7 +172,7 @@ namespace ActionCode.Physics
         {
             Vertical.UpdatePhysics();
             Horizontal.UpdatePhysics();
-            //Distal.UpdatePhysics();
+            Distal.UpdatePhysics();
         }
 
         private void UpdatePosition()
@@ -191,6 +192,7 @@ namespace ActionCode.Physics
 
             Vertical.UpdatePositionUsingMovingPlatform(ref latePosition);
             Horizontal.UpdatePositionUsingMovingPlatform(ref latePosition);
+            Distal.UpdatePositionUsingMovingPlatform(ref latePosition);
 
             transform.position = latePosition;
 
@@ -201,7 +203,7 @@ namespace ActionCode.Physics
 
         private void InvokeOnHitAnySide() => OnHitAnySide?.Invoke();
 
-        //private void ResetDistal() => Vertical.Reset(this);
+        private void ResetDistal() => Distal.Reset(this);
         private void ResetVertical() => Vertical.Reset(this);
         private void ResetHorizontal() => Horizontal.Reset(this);
 

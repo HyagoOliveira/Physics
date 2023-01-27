@@ -40,8 +40,8 @@ namespace ActionCode.Physics.Editor
 
         private void DrawCurrentCollisions()
         {
-            //if (body.Distal.IsForwardCollision()) DrawDistalCollision(Vector3.forward);
-            //if (body.Distal.IsBackwardCollision()) DrawDistalCollision(Vector3.back);
+            if (body.Distal.IsForwardCollision()) DrawDistalCollision(Vector3.forward);
+            if (body.Distal.IsBackwardCollision()) DrawDistalCollision(Vector3.back);
 
             if (body.Horizontal.IsCollisionRight()) DrawHorizontalCollision(Vector3.right);
             if (body.Horizontal.IsCollisionLeft()) DrawHorizontalCollision(Vector3.left);
@@ -52,13 +52,13 @@ namespace ActionCode.Physics.Editor
 
         private void DrawRaycastCollisions()
         {
-            //body.Distal.DrawCollisions = distalAxis.isExpanded;
+            body.Distal.DrawCollisions = distalAxis.isExpanded;
             body.Vertical.DrawCollisions = verticalAxis.isExpanded;
             body.Horizontal.DrawCollisions = horizontalAxis.isExpanded;
 
             if (!Application.isPlaying)
             {
-                //body.Distal.UpdateCollisions();
+                body.Distal.UpdateCollisions();
                 body.Vertical.UpdateCollisions();
                 body.Horizontal.UpdateCollisions();
             }

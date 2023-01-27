@@ -7,8 +7,11 @@ namespace ActionCode.Physics
     /// Distal Axis (forward/backward direction) used by <see cref="BoxBody"/> component.
     /// </summary>
     [Serializable]
-    public sealed class DistalAxis //: AbstractAxis
-    {/*
+    public sealed class DistalAxis : AbstractAxis
+    {
+        private readonly Quaternion forwardRotation = Quaternion.identity;
+        private readonly Quaternion backwardsRotation = Quaternion.Euler(Vector3.up * -180F);
+
         /// <summary>
         /// Action fired when the Box stops after colliding using the forward side.
         /// </summary>
@@ -18,26 +21,6 @@ namespace ActionCode.Physics
         /// Action fired when the Box stops after colliding using the backward side.
         /// </summary>
         public event Action OnHitBackward;
-
-        /// <summary>
-        /// Action fired when the Box starts to move forward.
-        /// </summary>
-        public event Action OnStartMoveForward;
-
-        /// <summary>
-        /// Action fired when the Box starts to move backwards.
-        /// </summary>
-        public event Action OnStartMoveBackward;
-
-        /// <summary>
-        /// Action fired when the Box is moving forward.
-        /// </summary>
-        public event Action OnMovingForward;
-
-        /// <summary>
-        /// Action fired when the Box is moving backward.
-        /// </summary>
-        public event Action OnMovingBackward;
 
         /// <summary>
         /// Raycast information from the last forward hit.
@@ -93,6 +76,16 @@ namespace ActionCode.Physics
         public bool IsGravityToForward() => IsGravityPositive();
 
         /// <summary>
+        /// Rotates to up.
+        /// </summary>
+        public void RotateToForward() => Body.transform.rotation = forwardRotation;
+
+        /// <summary>
+        /// Rotates to down.
+        /// </summary>
+        public void RotateToBackwards() => Body.transform.rotation = backwardsRotation;
+
+        /// <summary>
         /// Checks if pushing against a solid backward collider.
         /// </summary>
         /// <returns>True if pushing against a solid colliding at back.</returns>
@@ -104,33 +97,26 @@ namespace ActionCode.Physics
         /// <returns>True if pushing against a solid colliding at forward.</returns>
         public bool IsPushingForwardCollider() => IsPushingColliderOnPositiveSide();
 
-        protected override float GetHalfSize() => Body.Collider.HalfSize.z;
-        protected override float GetDeltaMovement() => Body.DeltaPosition.z;
-        protected override float GetCollisionPointOnNegativeSide() => BackwardHit.Point.z + GetHalfSize() - Body.Collider.Offset.z;
-        protected override float GetCollisionPointOnPositiveSide() => ForwardHit.Point.z - GetHalfSize() - Body.Collider.Offset.z;
+        internal override void Reset(BoxBody body)
+        {
+            base.Reset(body);
+            SlopeLimit = 45f;
+
+#if UNITY_EDITOR
+            var is2DProject = UnityEditor.EditorSettings.defaultBehaviorMode == UnityEditor.EditorBehaviorMode.Mode2D;
+            if (is2DProject) Enabled = false;
+#endif
+        }
+
+        protected override float GetHalfScale() => Body.Collider.HalfSize.z;
+        protected override float GetOutOfCollisionPointOnNegativeSide() => BackwardHit.Point.z + GetHalfScale() - Body.Collider.Offset.z;
+        protected override float GetOutOfCollisionPointOnPositiveSide() => ForwardHit.Point.z - GetHalfScale() - Body.Collider.Offset.z;
 
         protected override void InvokeOnHitNegativeSide() => OnHitBackward?.Invoke();
         protected override void InvokeOnHitPositiveSide() => OnHitForward?.Invoke();
 
-        protected override void CheckMovementActions()
-        {
-            var wasMovingForward = Body.LastDeltaPosition.z > 0f;
-            var wasMovingBackward = Body.LastDeltaPosition.z < 0f;
-
-            var isMovingForward = Body.DeltaPosition.x > 0F;
-            var isMovingBackward = Body.DeltaPosition.x < 0F;
-
-            var startMoveForward = !isMovingForward && isMovingForward;
-            var startMoveBackward = !isMovingBackward && isMovingBackward;
-
-            if (startMoveForward) OnStartMoveForward?.Invoke();
-            else if (startMoveBackward) OnStartMoveBackward?.Invoke();
-
-            if (isMovingForward) OnMovingForward?.Invoke();
-            else if (isMovingBackward) OnMovingBackward?.Invoke();
-        }
-
         protected override Vector3 GetPositiveDirection() => Vector3.forward;
+
         protected override (Vector3 one, Vector3 two) GetCollisionPoints()
         {
             var bounds = Body.Collider.Bounds;
@@ -138,13 +124,18 @@ namespace ActionCode.Physics
             var topCenter = new Vector3(middleCenter.x, bounds.max.y, middleCenter.z);
             var bottomCenter = new Vector3(middleCenter.x, bounds.min.y, middleCenter.z);
 
-            var upOffset = Vector3.up * Offset + Body.Velocity;
-            var downOffset = Vector3.down * Offset + Body.Velocity;
+            var upOffset = Vector3.up * COLLISION_OFFSET;
+            var downOffset = Vector3.down * COLLISION_OFFSET;
 
             topCenter += downOffset;
             bottomCenter += upOffset;
 
             return (topCenter, bottomCenter);
-        }*/
+        }
+
+        protected override void RotateToPositiveSide() => RotateToForward();
+        protected override void RotateToNegativeSide() => RotateToBackwards();
+
+        protected override void SetCollisionPoint(float point) => Body.currentPosition.z = point;
     }
 }
