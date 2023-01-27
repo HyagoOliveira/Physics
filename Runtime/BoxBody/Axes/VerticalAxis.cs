@@ -104,11 +104,6 @@ namespace ActionCode.Physics
             Gravity = Physics2D.gravity.y;
         }
 
-        internal override void UpdateMovingPlatformPoint(ref float point)
-        {
-            throw new System.NotImplementedException();
-        }
-
         protected override float GetHalfScale() => Body.Collider.HalfSize.y;
         protected override float GetOutOfCollisionPointOnNegativeSide() => BottomHit.Point.y + GetHalfScale() - Body.Collider.Offset.y;
         protected override float GetOutOfCollisionPointOnPositiveSide() => TopHit.Point.y - GetHalfScale() - Body.Collider.Offset.y;
@@ -138,9 +133,6 @@ namespace ActionCode.Physics
 
         protected override void SetCollisionPoint(float point) => Body.currentPosition.y = point;
 
-        protected override bool ShouldLeaveMovingPlatform()
-        {
-            throw new System.NotImplementedException();
-        }
+        protected override bool IsCollisionWithMovingPlatform() => IsNegativeCollisionWithMovingPlatform();
     }
 }

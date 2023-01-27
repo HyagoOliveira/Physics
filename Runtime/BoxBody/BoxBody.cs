@@ -127,8 +127,9 @@ namespace ActionCode.Physics
         }
 
         public bool IsUsingMovingPlatform() =>
-            Horizontal.IsUsingMovingPlatform();
-        //Vertical.IsUsingMovingPlatform();
+            Vertical.IsEnabledAndUsingMovingPlatform() ||
+            Horizontal.IsEnabledAndUsingMovingPlatform();
+        //Distal.IsEnabledAndUsingMovingPlatform()
 
         private void UpdatePhysics()
         {
@@ -188,12 +189,13 @@ namespace ActionCode.Physics
 
             var latePosition = transform.position;
 
-            Horizontal.UpdateMovingPlatformPoint(ref latePosition.x);
+            Vertical.UpdatePositionUsingMovingPlatform(ref latePosition);
+            Horizontal.UpdatePositionUsingMovingPlatform(ref latePosition);
 
             transform.position = latePosition;
 
-            //TODO put this code inside AbstractColliderAdapter
             Physics2D.SyncTransforms();
+            //TODO put this code inside AbstractColliderAdapter
             //UnityEngine.Physics.SyncTransforms();
         }
 

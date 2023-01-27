@@ -115,12 +115,9 @@ namespace ActionCode.Physics
             SlopeLimit = 45f;
         }
 
-        internal override void UpdateMovingPlatformPoint(ref float point)
+        internal override void UpdatePositionUsingMovingPlatform(ref Vector3 position)
         {
-            if (!Enabled || !IsUsingMovingPlatform()) return;
-
-            var side = Mathf.Sign(point - platform.Position.x);
-            point = platform.GetSidePointRelativeFrom(side) + side * GetHalfScale();
+            if (IsUsingMovingPlatform()) position.x += platform.Velocity.x;
         }
 
         protected override Vector3 GetPositiveDirection() => Vector3.right;
@@ -152,15 +149,5 @@ namespace ActionCode.Physics
 
         protected override float GetOutOfCollisionPointOnNegativeSide() => LeftHit.Point.x + GetHalfScale() - Body.Collider.Offset.x;
         protected override float GetOutOfCollisionPointOnPositiveSide() => RightHit.Point.x - GetHalfScale() - Body.Collider.Offset.x;
-
-        protected override bool ShouldLeaveMovingPlatform()
-        {
-            if (!platform.gameObject.activeInHierarchy) return true;
-
-            var isMovingOutOfPlatform =
-                IsCollisionLeft() && IsMovingRight() ||
-                IsCollisionRight() && IsMovingLeft();
-            return isMovingOutOfPlatform;
-        }
     }
 }

@@ -79,7 +79,12 @@ namespace ActionCode.Physics
         public bool UseMovingPlatform
         {
             get => useMovingPlatform;
-            set => useMovingPlatform = value;
+            set
+            {
+                useMovingPlatform = value;
+                if (!UseMovingPlatform && IsUsingMovingPlatform())
+                    platform = null;
+            }
         }
 
         /// <summary>
@@ -195,7 +200,10 @@ namespace ActionCode.Physics
         internal void Validate()
         {
             RaysCount = raysCount;
-            var canValidateOffset = Body != null && Body.gameObject.activeInHierarchy;
+            var canValidateOffset =
+                Body != null &&
+                Body.Collider != null &&
+                Body.gameObject.activeInHierarchy;
             if (canValidateOffset) Offset = offset;
         }
 
@@ -228,6 +236,8 @@ namespace ActionCode.Physics
         /// </summary>
         /// <returns>True if using a <see cref="MovingPlatform"/>. False otherwise.</returns>
         public bool IsUsingMovingPlatform() => platform;
+
+        public bool IsEnabledAndUsingMovingPlatform() => Enabled && IsUsingMovingPlatform();
 
         /// <summary>
         /// Whether can move in any side.
@@ -282,10 +292,13 @@ namespace ActionCode.Physics
             UpdateCollisions();
             UpdateGravity();
             RestrictCollisions();
-            CheckForMovingPlatform();
+            UpdateMovingPlatformCollisions();
         }
 
-        internal abstract void UpdateMovingPlatformPoint(ref float point);
+        internal virtual void UpdatePositionUsingMovingPlatform(ref Vector3 position)
+        {
+            if (IsUsingMovingPlatform()) position += platform.Velocity;
+        }
 
         protected bool IsMovingToNegativeSide() => Speed < 0F;
         protected bool IsMovingToPositiveSide() => Speed > 0F;
@@ -314,8 +327,6 @@ namespace ActionCode.Physics
 
         protected float GetCollisionDistance() => GetHalfScale() + COLLISION_SKIN;
 
-        protected abstract bool ShouldLeaveMovingPlatform();
-
         protected abstract void InvokeOnHitNegativeSide();
         protected abstract void InvokeOnHitPositiveSide();
 
@@ -333,7 +344,6 @@ namespace ActionCode.Physics
 
         private void UpdateGravity()
         {
-            //if (Body.IsOverMovingPlatform()) return;
             var updateSpeedWithGravity = UseGravity && ShouldApplyGravity();
             if (updateSpeedWithGravity) Speed += Gravity * Time.deltaTime;
         }
@@ -391,13 +401,17 @@ namespace ActionCode.Physics
             }
         }
 
-        private void CheckForMovingPlatform()
+        private void UpdateMovingPlatformCollisions()
         {
             if (!UseMovingPlatform) return;
 
             if (IsUsingMovingPlatform())
             {
-                if (ShouldLeaveMovingPlatform()) platform = null;
+                var shouldLeavePlatform =
+                    !platform.gameObject.activeInHierarchy ||
+                    !IsCollisionWithMovingPlatform();
+
+                if (shouldLeavePlatform) platform = null;
             }
             else if (IsCollisionWithMovingPlatform())
                 InvokeOnCollisionWithMovingPlatform();
