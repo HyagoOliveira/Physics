@@ -19,6 +19,9 @@ namespace ActionCode.Physics
         private AbstractColliderAdapter collider;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
+        [SerializeField, Range(0f, MAX_SLOPE_LIMIT), Tooltip("The maximum angle limit (in degrees) of a slope.")]
+        private float slopeLimit = 0F;
+
         [Header("Axes")]
         [SerializeField, Tooltip("The horizontal (left/right) axis.")]
         [ContextMenuItem("Reset", nameof(ResetHorizontal))]
@@ -31,6 +34,11 @@ namespace ActionCode.Physics
         [SerializeField, Tooltip("The distal (forward/backward) axis.")]
         [ContextMenuItem("Reset", nameof(ResetDistal))]
         private DistalAxis distal;
+
+        /// <summary>
+        /// Maximum allowed slope limit.
+        /// </summary>
+        public const float MAX_SLOPE_LIMIT = 90F;
 
         #region Events
         /// <summary>
@@ -97,6 +105,15 @@ namespace ActionCode.Physics
         /// Whether is airborne.
         /// </summary>
         public bool IsAirborne => !Vertical.IsCollisionDown();
+
+        /// <summary>
+        /// The maximum angle limit (in degrees) of a slope.
+        /// </summary>
+        public float SlopeLimit
+        {
+            get => slopeLimit;
+            set => slopeLimit = Mathf.Clamp(value, 0f, MAX_SLOPE_LIMIT);
+        }
         #endregion
 
         internal Vector3 currentPosition;

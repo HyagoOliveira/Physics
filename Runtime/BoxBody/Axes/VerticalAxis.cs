@@ -9,16 +9,8 @@ namespace ActionCode.Physics
     [Serializable]
     public sealed class VerticalAxis : AbstractAxis
     {
-        [SerializeField, Range(0f, MAX_SLOPE_LIMIT), Tooltip("The maximum angle limit (in degrees) of a slope.")]
-        private float slopeLimit = 0F;
-
         private readonly Quaternion upRotation = Quaternion.identity;
         private readonly Quaternion downRotation = Quaternion.Euler(Vector3.right * -180F);
-
-        /// <summary>
-        /// Maximum allowed slope limit.
-        /// </summary>
-        public const float MAX_SLOPE_LIMIT = 90F;
 
         /// <summary>
         /// Action fired when the Box stops after colliding using the top side.
@@ -39,15 +31,6 @@ namespace ActionCode.Physics
         /// Raycast information from the last bottom hit.
         /// </summary>
         public IRaycastHit BottomHit => negativeHit;
-
-        /// <summary>
-        /// The maximum angle limit (in degrees) of a slope.
-        /// </summary>
-        public float SlopeLimit
-        {
-            get => slopeLimit;
-            set => slopeLimit = Mathf.Clamp(value, 0f, MAX_SLOPE_LIMIT);
-        }
 
         public override bool CanMove(Vector3 direction)
         {
@@ -156,7 +139,7 @@ namespace ActionCode.Physics
 
             slopeY = hit.Point.y;
             var floorAngle = Vector3.Angle(hit.Normal, Vector3.up);
-            return floorAngle < SlopeLimit;
+            return floorAngle < Body.SlopeLimit;
         }
 
         protected override float GetHalfScale() => Body.Collider.HalfSize.y;
