@@ -20,7 +20,7 @@ namespace ActionCode.Physics
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
         [SerializeField, Range(0f, MAX_SLOPE_LIMIT), Tooltip("The maximum angle limit (in degrees) of a slope.")]
-        private float slopeLimit = 0F;
+        private float slopeLimit = 45F;
 
         [Header("Axes")]
         [SerializeField, Tooltip("The horizontal (left/right) axis.")]
@@ -189,7 +189,6 @@ namespace ActionCode.Physics
             Vertical.UpdatePhysics();
             Horizontal.UpdatePhysics();
             Distal.UpdatePhysics();
-            Vertical.UpdateSlopePosition();
         }
 
         private void UpdatePosition()

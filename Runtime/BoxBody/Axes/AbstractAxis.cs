@@ -167,8 +167,8 @@ namespace ActionCode.Physics
 
         protected MovingPlatform platform;
 
-        private bool isNegativeCollision;
-        private bool isPositiveCollision;
+        protected bool isNegativeCollision;
+        protected bool isPositiveCollision;
 
         private float speed;
         private float facing;
@@ -238,7 +238,7 @@ namespace ActionCode.Physics
         /// <summary>
         /// Update all axis collisions.
         /// </summary>
-        public void UpdateCollisions()
+        public virtual void UpdateCollisions()
         {
             var points = GetCollisionPoints();
             var distance = GetHalfScale() + COLLISION_SKIN;

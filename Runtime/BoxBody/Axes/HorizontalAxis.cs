@@ -109,6 +109,14 @@ namespace ActionCode.Physics
         /// </summary>
         public void RotateToRight() => Body.transform.rotation = rightRotation;
 
+        public override void UpdateCollisions()
+        {
+            base.UpdateCollisions();
+
+            isNegativeCollision = isNegativeCollision && IsAllowedAngle(negativeHit.Normal);
+            isPositiveCollision = isPositiveCollision && IsAllowedAngle(positiveHit.Normal);
+        }
+
         internal override void UpdatePositionUsingMovingPlatform(ref Vector3 position)
         {
             if (IsUsingMovingPlatform()) position.x += platform.Velocity.x;
@@ -143,5 +151,11 @@ namespace ActionCode.Physics
 
         protected override float GetOutOfCollisionPointOnNegativeSide() => LeftHit.Point.x + GetHalfScale() - Body.Collider.Offset.x;
         protected override float GetOutOfCollisionPointOnPositiveSide() => RightHit.Point.x - GetHalfScale() - Body.Collider.Offset.x;
+
+        private bool IsAllowedAngle(Vector3 normal)
+        {
+            var angle = Vector3.Angle(normal, Vector3.up);
+            return angle > Body.SlopeLimit || Mathf.Approximately(angle, Body.SlopeLimit);
+        }
     }
 }

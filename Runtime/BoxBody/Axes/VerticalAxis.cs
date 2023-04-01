@@ -97,6 +97,15 @@ namespace ActionCode.Physics
         /// </summary>
         public void RotateToDown() => Body.transform.rotation = downRotation;
 
+        public override void UpdateCollisions()
+        {
+            var wasOverSlope = IsOverSlope();
+
+            base.UpdateCollisions();
+
+            if (wasOverSlope) UpdateNegativeCollisionUsingSlope();
+        }
+
         internal override void Reset(BoxBody body)
         {
             base.Reset(body);
@@ -104,43 +113,7 @@ namespace ActionCode.Physics
             Gravity = Physics2D.gravity.y;
         }
 
-        internal void UpdateSlopePosition()
-        {
-            if (!Enabled || IsMoving()) return;
-
-            if (IsOverSlope(out float slopeY))
-            {
-                StopSpeed();
-                SetCollisionPoint(slopeY);
-            }
-        }
-
-        private bool IsOverSlope(out float slopeY)
-        {
-            const float defaultSlopeDistance = 1F;
-
-            var additionalDistance = defaultSlopeDistance;// IsCollisionDown() ? defaultSlopeDistance : 0F;
-            var points = GetCollisionPoints();
-            var distance = GetHalfScale() + additionalDistance;
-            var isCollision = Body.Collider.Raycasts(
-                points.one,
-                points.two,
-                Vector3.down,
-                out IRaycastHit hit,
-                distance,
-                Collisions,
-                RaysCount,
-                true
-            );
-
-            slopeY = 0f;
-
-            if (!isCollision) return false;
-
-            slopeY = hit.Point.y;
-            var floorAngle = Vector3.Angle(hit.Normal, Vector3.up);
-            return floorAngle < Body.SlopeLimit;
-        }
+        private float GetAdditionalSlopeDistance() => 1F;
 
         protected override float GetHalfScale() => Body.Collider.HalfSize.y;
         protected override float GetOutOfCollisionPointOnNegativeSide() => BottomHit.Point.y + GetHalfScale() - Body.Collider.Offset.y;
@@ -148,7 +121,6 @@ namespace ActionCode.Physics
 
         protected override void InvokeOnHitPositiveSide() => OnHitTop?.Invoke();
         protected override void InvokeOnHitNegativeSide() => OnHitBottom?.Invoke();
-
 
         protected override Vector3 GetPositiveDirection() => Vector3.up;
 
@@ -173,5 +145,30 @@ namespace ActionCode.Physics
         protected override void SetCollisionPoint(float point) => Body.currentPosition.y = point;
 
         protected override bool IsCollisionWithMovingPlatform() => IsNegativeCollisionWithMovingPlatform();
+
+        private void UpdateNegativeCollisionUsingSlope()
+        {
+            var points = GetCollisionPoints();
+            var distance = GetHalfScale() + GetAdditionalSlopeDistance();
+
+            isNegativeCollision = Body.Collider.Raycasts(
+                points.one,
+                points.two,
+                Vector3.down,
+                out negativeHit,
+                distance,
+                Collisions,
+                RaysCount,
+                true
+            );
+        }
+
+        private bool IsOverSlope()
+        {
+            if (IsMovingUp() || !IsCollisionDown()) return false;
+
+            var floorAngle = Vector3.Angle(BottomHit.Normal, Vector3.up);
+            return floorAngle > 0F && floorAngle < Body.SlopeLimit;
+        }
     }
 }
