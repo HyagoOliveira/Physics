@@ -9,8 +9,16 @@ namespace ActionCode.Physics
     [Serializable]
     public sealed class VerticalAxis : AbstractAxis
     {
+        [SerializeField, Range(0f, MAX_SLOPE_LIMIT), Tooltip("The maximum angle limit (in degrees) of a slope.")]
+        private float slopeLimit = 0F;
+
         private readonly Quaternion upRotation = Quaternion.identity;
         private readonly Quaternion downRotation = Quaternion.Euler(Vector3.right * -180F);
+
+        /// <summary>
+        /// Maximum allowed slope limit.
+        /// </summary>
+        public const float MAX_SLOPE_LIMIT = 90F;
 
         /// <summary>
         /// Action fired when the Box stops after colliding using the top side.
@@ -31,6 +39,15 @@ namespace ActionCode.Physics
         /// Raycast information from the last bottom hit.
         /// </summary>
         public IRaycastHit BottomHit => negativeHit;
+
+        /// <summary>
+        /// The maximum angle limit (in degrees) of a slope.
+        /// </summary>
+        public float SlopeLimit
+        {
+            get => slopeLimit;
+            set => slopeLimit = Mathf.Clamp(value, 0f, MAX_SLOPE_LIMIT);
+        }
 
         public override bool CanMove(Vector3 direction)
         {
@@ -104,12 +121,51 @@ namespace ActionCode.Physics
             Gravity = Physics2D.gravity.y;
         }
 
+        internal void UpdateSlopePosition()
+        {
+            if (!Enabled || IsMoving()) return;
+
+            if (IsOverSlope(out float slopeY))
+            {
+                StopSpeed();
+                SetCollisionPoint(slopeY);
+            }
+        }
+
+        private bool IsOverSlope(out float slopeY)
+        {
+            const float defaultSlopeDistance = 1F;
+
+            var additionalDistance = defaultSlopeDistance;// IsCollisionDown() ? defaultSlopeDistance : 0F;
+            var points = GetCollisionPoints();
+            var distance = GetHalfScale() + additionalDistance;
+            var isCollision = Body.Collider.Raycasts(
+                points.one,
+                points.two,
+                Vector3.down,
+                out IRaycastHit hit,
+                distance,
+                Collisions,
+                RaysCount,
+                true
+            );
+
+            slopeY = 0f;
+
+            if (!isCollision) return false;
+
+            slopeY = hit.Point.y;
+            var floorAngle = Vector3.Angle(hit.Normal, Vector3.up);
+            return floorAngle < SlopeLimit;
+        }
+
         protected override float GetHalfScale() => Body.Collider.HalfSize.y;
         protected override float GetOutOfCollisionPointOnNegativeSide() => BottomHit.Point.y + GetHalfScale() - Body.Collider.Offset.y;
         protected override float GetOutOfCollisionPointOnPositiveSide() => TopHit.Point.y - GetHalfScale() - Body.Collider.Offset.y;
 
-        protected override void InvokeOnHitNegativeSide() => OnHitBottom?.Invoke();
         protected override void InvokeOnHitPositiveSide() => OnHitTop?.Invoke();
+        protected override void InvokeOnHitNegativeSide() => OnHitBottom?.Invoke();
+
 
         protected override Vector3 GetPositiveDirection() => Vector3.up;
 

@@ -134,15 +134,14 @@ namespace ActionCode.Physics
 
         private void UpdatePhysics()
         {
-            //WasGrounded = IsGrounded;
             LastPosition = currentPosition;
-            //WasMovingAnySide = IsMovingAnySide;
-            //LastDeltaPosition = DeltaPosition;
             currentPosition = transform.position;
 
             UpdateAxesPhysics();
             UpdateVelocity();
             UpdatePosition();
+
+            WasGrounded = IsGrounded;
         }
 
         private void AddAxesListeners()
@@ -173,6 +172,7 @@ namespace ActionCode.Physics
             Vertical.UpdatePhysics();
             Horizontal.UpdatePhysics();
             Distal.UpdatePhysics();
+            Vertical.UpdateSlopePosition();
         }
 
         private void UpdatePosition()

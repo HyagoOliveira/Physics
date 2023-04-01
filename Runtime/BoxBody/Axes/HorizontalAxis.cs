@@ -109,12 +109,6 @@ namespace ActionCode.Physics
         /// </summary>
         public void RotateToRight() => Body.transform.rotation = rightRotation;
 
-        internal override void Reset(BoxBody body)
-        {
-            base.Reset(body);
-            SlopeLimit = 45f;
-        }
-
         internal override void UpdatePositionUsingMovingPlatform(ref Vector3 position)
         {
             if (IsUsingMovingPlatform()) position.x += platform.Velocity.x;

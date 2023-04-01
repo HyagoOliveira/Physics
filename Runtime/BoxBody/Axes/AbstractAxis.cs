@@ -17,8 +17,6 @@ namespace ActionCode.Physics
         private float gravity;
         [SerializeField, Min(0f), Tooltip("The maximum speed allowed. Should always be positive.")]
         private float maxSpeed = 50f;
-        [SerializeField, Range(0f, MAX_SLOPE_LIMIT), Tooltip("The maximum angle limit (in degrees) of a slope.")]
-        private float slopeLimit = 0F;
         [SerializeField, Min(MIN_RAYS_COUNT), Tooltip("The number of raycasts for this axis.")]
         private int raysCount = 3;
         [SerializeField, Tooltip("The layer mask collisions. Only layers on this mask will be used on this axis.")]
@@ -54,11 +52,6 @@ namespace ActionCode.Physics
         /// Maximum allowed rays.
         /// </summary>
         public const int MAX_RAYS_COUNT = 64;
-
-        /// <summary>
-        /// Maximum allowed slope limit.
-        /// </summary>
-        public const float MAX_SLOPE_LIMIT = 90F;
         #endregion
 
         #region Properties
@@ -144,15 +137,6 @@ namespace ActionCode.Physics
         {
             get => maxSpeed;
             set => maxSpeed = Mathf.Max(value, 0f);
-        }
-
-        /// <summary>
-        /// The maximum angle limit (in degrees) of a slope.
-        /// </summary>
-        public float SlopeLimit
-        {
-            get => slopeLimit;
-            set => slopeLimit = Mathf.Clamp(value, 0f, MAX_SLOPE_LIMIT);
         }
 
         /// <summary>
@@ -265,10 +249,26 @@ namespace ActionCode.Physics
 
             if (DrawCollisions) Debug.DrawLine(points.one, points.two, Color.green);
 
-            isNegativeCollision = Body.Collider.Raycasts(points.one, points.two, -GetPositiveDirection(),
-                out negativeHit, negativeDistance, Collisions, SlopeLimit, RaysCount, DrawCollisions);
-            isPositiveCollision = Body.Collider.Raycasts(points.one, points.two, GetPositiveDirection(),
-                out positiveHit, positiveDistance, Collisions, SlopeLimit, RaysCount, DrawCollisions);
+            isNegativeCollision = Body.Collider.Raycasts(
+                points.one,
+                points.two,
+                -GetPositiveDirection(),
+                out negativeHit,
+                negativeDistance,
+                Collisions,
+                RaysCount,
+                DrawCollisions
+            );
+            isPositiveCollision = Body.Collider.Raycasts(
+                points.one,
+                points.two,
+                GetPositiveDirection(),
+                out positiveHit,
+                positiveDistance,
+                Collisions,
+                RaysCount,
+                DrawCollisions
+            );
         }
 
         internal void UpdatePhysics()

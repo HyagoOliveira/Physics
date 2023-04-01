@@ -100,7 +100,6 @@ namespace ActionCode.Physics
         internal override void Reset(BoxBody body)
         {
             base.Reset(body);
-            SlopeLimit = 45f;
 
 #if UNITY_EDITOR
             var is2DProject = UnityEditor.EditorSettings.defaultBehaviorMode == UnityEditor.EditorBehaviorMode.Mode2D;
