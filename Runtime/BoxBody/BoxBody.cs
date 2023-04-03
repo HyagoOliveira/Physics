@@ -19,6 +19,8 @@ namespace ActionCode.Physics
         private AbstractColliderAdapter collider;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
+        [SerializeField, Tooltip("The layer mask collisions. Only layers on this mask will be used on this axis.")]
+        private LayerMask collisions;
         [SerializeField, Range(0f, MAX_SLOPE_LIMIT), Tooltip("The maximum angle limit (in degrees) of a slope.")]
         private float slopeLimit = 45F;
 
@@ -113,6 +115,15 @@ namespace ActionCode.Physics
         {
             get => slopeLimit;
             set => slopeLimit = Mathf.Clamp(value, 0f, MAX_SLOPE_LIMIT);
+        }
+
+        /// <summary>
+        /// The layer mask collisions. Only layers on this mask will be used on this axis.
+        /// </summary>
+        public LayerMask Collisions
+        {
+            get => collisions;
+            set => collisions = value;
         }
         #endregion
 

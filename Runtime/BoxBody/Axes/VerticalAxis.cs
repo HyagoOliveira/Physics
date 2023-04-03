@@ -157,7 +157,7 @@ namespace ActionCode.Physics
                 Vector3.down,
                 out negativeHit,
                 distance,
-                Collisions,
+                Body.Collisions,
                 RaysCount,
                 DrawCollisions
             );

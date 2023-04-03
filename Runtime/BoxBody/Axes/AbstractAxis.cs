@@ -19,8 +19,6 @@ namespace ActionCode.Physics
         private float maxSpeed = 50f;
         [SerializeField, Min(MIN_RAYS_COUNT), Tooltip("The number of raycasts for this axis.")]
         private int raysCount = 3;
-        [SerializeField, Tooltip("The layer mask collisions. Only layers on this mask will be used on this axis.")]
-        private LayerMask collisions;
 
         /// <summary>
         /// Action fired when stops after colliding using any side of this axis.
@@ -110,15 +108,6 @@ namespace ActionCode.Physics
         {
             get => raysCount;
             set => raysCount = Mathf.Clamp(value, MIN_RAYS_COUNT, MAX_RAYS_COUNT);
-        }
-
-        /// <summary>
-        /// The layer mask collisions. Only layers on this mask will be used on this axis.
-        /// </summary>
-        public LayerMask Collisions
-        {
-            get => collisions;
-            set => collisions = value;
         }
 
         /// <summary>
@@ -255,7 +244,7 @@ namespace ActionCode.Physics
                 -GetPositiveDirection(),
                 out negativeHit,
                 negativeDistance,
-                Collisions,
+                Body.Collisions,
                 RaysCount,
                 DrawCollisions
             );
@@ -265,7 +254,7 @@ namespace ActionCode.Physics
                 GetPositiveDirection(),
                 out positiveHit,
                 positiveDistance,
-                Collisions,
+                Body.Collisions,
                 RaysCount,
                 DrawCollisions
             );
