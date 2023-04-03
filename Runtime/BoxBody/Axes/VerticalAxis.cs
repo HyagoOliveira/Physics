@@ -113,8 +113,6 @@ namespace ActionCode.Physics
             Gravity = Physics2D.gravity.y;
         }
 
-        private float GetAdditionalSlopeDistance() => 1F;
-
         protected override float GetHalfScale() => Body.Collider.HalfSize.y;
         protected override float GetOutOfCollisionPointOnNegativeSide() => BottomHit.Point.y + GetHalfScale() - Body.Collider.Offset.y;
         protected override float GetOutOfCollisionPointOnPositiveSide() => TopHit.Point.y - GetHalfScale() - Body.Collider.Offset.y;
@@ -148,8 +146,10 @@ namespace ActionCode.Physics
 
         private void UpdateNegativeCollisionUsingSlope()
         {
+            const float additionalSlopeDistance = 1F;
+
             var points = GetCollisionPoints();
-            var distance = GetHalfScale() + GetAdditionalSlopeDistance();
+            var distance = GetHalfScale() + additionalSlopeDistance;
 
             isNegativeCollision = Body.Collider.Raycasts(
                 points.one,
@@ -159,13 +159,13 @@ namespace ActionCode.Physics
                 distance,
                 Collisions,
                 RaysCount,
-                true
+                DrawCollisions
             );
         }
 
         private bool IsOverSlope()
         {
-            if (IsMovingUp() || !IsCollisionDown()) return false;
+            if (BottomHit == null || IsMovingUp() || !IsCollisionDown()) return false;
 
             var floorAngle = Vector3.Angle(BottomHit.Normal, Vector3.up);
             return floorAngle > 0F && floorAngle < Body.SlopeLimit;
