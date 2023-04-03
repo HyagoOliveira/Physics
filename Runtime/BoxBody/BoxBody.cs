@@ -27,15 +27,15 @@ namespace ActionCode.Physics
         [Header("Axes")]
         [SerializeField, Tooltip("The horizontal (left/right) axis.")]
         [ContextMenuItem("Reset", nameof(ResetHorizontal))]
-        private HorizontalAxis horizontal;
+        private HorizontalAxis horizontal = new HorizontalAxis();
 
         [SerializeField, Tooltip("The vertical (up/down) axis.")]
         [ContextMenuItem("Reset", nameof(ResetVertical))]
-        private VerticalAxis vertical;
+        private VerticalAxis vertical = new VerticalAxis();
 
         [SerializeField, Tooltip("The distal (forward/backward) axis.")]
         [ContextMenuItem("Reset", nameof(ResetDistal))]
-        private DistalAxis distal;
+        private DistalAxis distal = new DistalAxis();
 
         /// <summary>
         /// Maximum allowed slope limit.
