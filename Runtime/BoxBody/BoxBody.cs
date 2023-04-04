@@ -21,7 +21,7 @@ namespace ActionCode.Physics
 
         [SerializeField, Tooltip("The layer mask collisions. Only layers on this mask will be used on this axis.")]
         private LayerMask collisions;
-        [SerializeField, Range(0f, MAX_SLOPE_LIMIT), Tooltip("The maximum angle limit (in degrees) of a slope.")]
+        [SerializeField, Range(minSlopeLimit, maxSlopeLimit), Tooltip("The maximum angle limit (in degrees) of a valid slope.")]
         private float slopeLimit = 45F;
 
         [Header("Axes")]
@@ -37,11 +37,6 @@ namespace ActionCode.Physics
         [ContextMenuItem("Reset", nameof(ResetDistal))]
         private DistalAxis distal = new DistalAxis();
 
-        /// <summary>
-        /// Maximum allowed slope limit.
-        /// </summary>
-        public const float MAX_SLOPE_LIMIT = 90F;
-
         #region Events
         /// <summary>
         /// Action fired when the RigidBody stops after colliding using any side.
@@ -52,7 +47,7 @@ namespace ActionCode.Physics
         /// Action fired when the RigidBody starts to move in any direction.
         /// </summary>
         //public event Action OnMoving;
-        #endregion
+        #endregion // Events
 
         #region Properties
 
@@ -71,7 +66,7 @@ namespace ActionCode.Physics
         /// The distal (forward/backward) axis.
         /// </summary>
         public DistalAxis Distal => distal;
-        #endregion
+        #endregion // Axes
 
         /// <summary>
         /// The local Collider Adapter component used to detect 2D or 3D collisions.
@@ -109,12 +104,12 @@ namespace ActionCode.Physics
         public bool IsAirborne => !Vertical.IsCollisionDown();
 
         /// <summary>
-        /// The maximum angle limit (in degrees) of a slope.
+        /// The maximum angle limit (in degrees) of a valid slope.
         /// </summary>
         public float SlopeLimit
         {
             get => slopeLimit;
-            set => slopeLimit = Mathf.Clamp(value, 0f, MAX_SLOPE_LIMIT);
+            set => slopeLimit = Mathf.Clamp(value, minSlopeLimit, maxSlopeLimit);
         }
 
         /// <summary>
@@ -125,7 +120,12 @@ namespace ActionCode.Physics
             get => collisions;
             set => collisions = value;
         }
-        #endregion
+        #endregion // Properties
+
+        #region Constants
+        private const float minSlopeLimit = 0F;
+        private const float maxSlopeLimit = 90F;
+        #endregion //Constants
 
         internal Vector3 currentPosition;
 
