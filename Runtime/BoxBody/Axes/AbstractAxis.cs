@@ -139,7 +139,7 @@ namespace ActionCode.Physics
         /// <summary>
         /// The current facing direction.
         /// </summary>
-        public float Facing
+        public int Facing
         {
             get => facing;
             set
@@ -158,8 +158,8 @@ namespace ActionCode.Physics
         protected bool isNegativeCollision;
         protected bool isPositiveCollision;
 
+        private int facing;
         private float speed;
-        private float facing;
 
         internal virtual void Reset(BoxBody body) => this.body = body;
 
@@ -292,8 +292,8 @@ namespace ActionCode.Physics
         protected bool IsGravityPositive() => Gravity > 0F;
         protected bool IsGravityNegative() => Gravity < 0F;
 
-        protected bool IsFacingNegativeSide() => Facing < 0F;
-        protected bool IsFacingPositiveSide() => Facing > 0F;
+        protected bool IsFacingNegativeSide() => Facing < 0;
+        protected bool IsFacingPositiveSide() => Facing > 0;
 
         protected bool IsCollisionOnNegativeSide() => isNegativeCollision;
         protected bool IsCollisionOnPositiveSide() => isPositiveCollision;
