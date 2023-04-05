@@ -154,7 +154,8 @@ namespace ActionCode.Physics
 
         private bool IsAllowedAngle(Vector3 normal)
         {
-            var angle = Vector3.Angle(normal, Vector3.up);
+            var verticalUp = Vector3.up * MathF.Sign(normal.y);
+            var angle = Vector3.Angle(normal, verticalUp);
             return angle > Body.SlopeLimit || Mathf.Approximately(angle, Body.SlopeLimit);
         }
     }
