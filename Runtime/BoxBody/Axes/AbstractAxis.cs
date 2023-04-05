@@ -44,7 +44,7 @@ namespace ActionCode.Physics
         /// <summary>
         /// Minimum allowed rays.
         /// </summary>
-        public const int MIN_RAYS_COUNT = 1;
+        public const int MIN_RAYS_COUNT = 2;
 
         /// <summary>
         /// Maximum allowed rays.
@@ -96,10 +96,9 @@ namespace ActionCode.Physics
         public bool DrawCollisions { get; set; }
 
         /// <summary>
-        /// Whether collisions are locked.
-        /// <para>If enabled, no collisions will be calculated.</para>
+        /// Whether collisions are disabled.
         /// </summary>
-        public bool IsCollisionsLocked { get; set; }
+        public bool IsCollisionsDisabled { get; private set; }
 
         /// <summary>
         /// The number of raycasts for this axis.
@@ -225,10 +224,22 @@ namespace ActionCode.Physics
         public void StopSpeed() => Speed = 0F;
 
         /// <summary>
+        /// Enables collisions in this axis.
+        /// </summary>
+        public void EnableCollisions() => IsCollisionsDisabled = false;
+
+        /// <summary>
+        /// Disables collisions in this axis.
+        /// </summary>
+        public void DisableCollisions() => IsCollisionsDisabled = true;
+
+        /// <summary>
         /// Update all axis collisions.
         /// </summary>
         public virtual void UpdateCollisions()
         {
+            if (IsCollisionsDisabled) return;
+
             var points = GetCollisionPoints();
             var distance = GetHalfScale() + COLLISION_SKIN;
             var speedPerFrame = Mathf.Abs(Speed * Time.deltaTime);
@@ -325,8 +336,6 @@ namespace ActionCode.Physics
 
         private void RestrictCollisions()
         {
-            if (IsCollisionsLocked) return;
-
             RestrictCollisionsUsingPushingColliders();
             RestrictCollisionsUsingMovement();
         }

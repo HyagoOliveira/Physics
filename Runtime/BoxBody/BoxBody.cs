@@ -139,7 +139,6 @@ namespace ActionCode.Physics
         }
 
         private void Awake() => currentPosition = transform.position;
-
         private void FixedUpdate() => UpdatePhysics();
         private void LateUpdate() => UpdateMovingPlatformPosition();
         private void OnEnable() => AddAxesListeners();
@@ -159,6 +158,26 @@ namespace ActionCode.Physics
             Vertical.IsEnabledAndUsingMovingPlatform() ||
             Horizontal.IsEnabledAndUsingMovingPlatform() ||
             Distal.IsEnabledAndUsingMovingPlatform();
+
+        /// <summary>
+        /// Enables collisions in all axes.
+        /// </summary>
+        public void EnableCollisions()
+        {
+            Horizontal.EnableCollisions();
+            Vertical.EnableCollisions();
+            Distal.EnableCollisions();
+        }
+
+        /// <summary>
+        /// Disables collisions in all axes.
+        /// </summary>
+        public void DisableCollisions()
+        {
+            Horizontal.DisableCollisions();
+            Vertical.DisableCollisions();
+            Distal.DisableCollisions();
+        }
 
         private void UpdatePhysics()
         {
