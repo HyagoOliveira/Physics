@@ -17,7 +17,7 @@ namespace ActionCode.Physics
         private float gravity;
         [SerializeField, Min(0f), Tooltip("The maximum speed allowed. Should always be positive.")]
         private float maxSpeed = 50f;
-        [SerializeField, Min(MIN_RAYS_COUNT), Tooltip("The number of raycasts for this axis.")]
+        [SerializeField, Tooltip("The number of raycasts for this axis.")]
         private int raysCount = 3;
 
         /// <summary>
