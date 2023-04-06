@@ -51,17 +51,7 @@ namespace ActionCode.Physics
         /// <returns><inheritdoc cref="IsCollisionLeft"/></returns>
         public bool IsCollisionRight() => IsCollisionOnPositiveSide();
 
-        /// <summary>
-        /// Whether is facing to the left side.
-        /// </summary>
-        /// <returns>True if is facing to the left side. False otherwise.</returns>
-        public bool IsFacingLeft() => IsFacingNegativeSide();
 
-        /// <summary>
-        /// Whether is facing to the right side.
-        /// </summary>
-        /// <returns>True if is facing to the right side. False otherwise.</returns>
-        public bool IsFacingRight() => IsFacingPositiveSide();
 
         /// <summary>
         /// Check if moving leftwards.

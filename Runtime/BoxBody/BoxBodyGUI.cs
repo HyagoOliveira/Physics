@@ -24,7 +24,6 @@ namespace ActionCode.Physics
             GUI.BeginGroup(area, title, new GUIStyle("Box"));
             lines = 1;
 
-            DrawValue("Facing", body.Horizontal.Facing);
             DrawValue("Gravity", body.Vertical.Gravity);
             DrawValue("Speed", body.GetSpeeds());
             DrawValue("Velocity", body.Velocity);

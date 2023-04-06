@@ -135,19 +135,6 @@ namespace ActionCode.Physics
             get => gravity;
             set => gravity = value;
         }
-
-        /// <summary>
-        /// The current facing direction.
-        /// </summary>
-        public int Facing
-        {
-            get => facing;
-            set
-            {
-                facing = value;
-                UpdateRotation();
-            }
-        }
         #endregion
 
         protected IRaycastHit negativeHit;
@@ -158,7 +145,6 @@ namespace ActionCode.Physics
         protected bool isNegativeCollision;
         protected bool isPositiveCollision;
 
-        private int facing;
         private float speed;
 
         internal virtual void Reset(BoxBody body) => this.body = body;
@@ -204,14 +190,6 @@ namespace ActionCode.Physics
         public bool CanMove() => !IsCollisionOnNegativeSide() || !IsCollisionOnPositiveSide();
 
         /// <summary>
-        /// Whether if facing a collision. Triggers don't count as a solid collision.
-        /// </summary>
-        /// <returns>True if facing a collision. False otherwise.</returns>
-        public bool IsFacingCollision() =>
-            IsFacingNegativeSide() && IsCollisionOnNegativeSide() ||
-            IsFacingPositiveSide() && IsCollisionOnPositiveSide();
-
-        /// <summary>
         /// Whether can move in the given direction.
         /// </summary>
         /// <param name="direction">The direction to check.</param>
@@ -232,6 +210,16 @@ namespace ActionCode.Physics
         /// Disables collisions in this axis.
         /// </summary>
         public void DisableCollisions() => IsCollisionsDisabled = true;
+
+        /// <summary>
+        /// Updates the rotation based on the given direction.
+        /// </summary>
+        /// <param name="direction">A small byte value of -1 or 1.</param>
+        public void UpdateRotation(sbyte direction)
+        {
+            if (direction < 0) RotateToNegativeSide();
+            else if (direction > 0) RotateToPositiveSide();
+        }
 
         /// <summary>
         /// Update all axis collisions.
@@ -291,9 +279,6 @@ namespace ActionCode.Physics
 
         protected bool IsGravityPositive() => Gravity > 0F;
         protected bool IsGravityNegative() => Gravity < 0F;
-
-        protected bool IsFacingNegativeSide() => Facing < 0;
-        protected bool IsFacingPositiveSide() => Facing > 0;
 
         protected bool IsCollisionOnNegativeSide() => isNegativeCollision;
         protected bool IsCollisionOnPositiveSide() => isPositiveCollision;
@@ -399,12 +384,6 @@ namespace ActionCode.Physics
             }
             else if (IsCollisionWithMovingPlatform())
                 InvokeOnCollisionWithMovingPlatform();
-        }
-
-        private void UpdateRotation()
-        {
-            if (IsFacingNegativeSide()) RotateToNegativeSide();
-            else if (IsFacingPositiveSide()) RotateToPositiveSide();
         }
 
         private void InvokeOnHitAnySide() => OnHitAnySide?.Invoke();
