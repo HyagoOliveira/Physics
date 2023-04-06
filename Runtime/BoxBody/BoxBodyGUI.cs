@@ -5,35 +5,42 @@ namespace ActionCode.Physics
     [ExecuteAlways]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(BoxBody))]
-    public sealed class BoxBodyGUI : MonoBehaviour
+    public class BoxBodyGUI : MonoBehaviour
     {
-        public BoxBody body;
-        public string title = "BoxBody";
-        public Rect area = new Rect(60f, 30f, 220f, 120f);
+        [SerializeField] protected BoxBody body;
+        [SerializeField] protected string title = "BoxBody";
+        [SerializeField] protected Rect area = new Rect(60f, 30f, 220f, 120f);
 
         private int lines;
         private GUIStyle style;
 
-        private void Reset() => body = GetComponent<BoxBody>();
+        protected virtual void Reset() => body = GetComponent<BoxBody>();
 
         private void OnGUI()
         {
-            if (body == null) return;
+            if (!HasRequiredComponents()) return;
+
             if (style == null) SetupStyle();
 
-            GUI.BeginGroup(area, title, new GUIStyle("Box"));
             lines = 1;
 
+            GUI.BeginGroup(area, title, new GUIStyle("Box"));
+            DrawValuesGroup();
+            GUI.EndGroup();
+        }
+
+        protected virtual bool HasRequiredComponents() => body != null;
+
+        protected virtual void DrawValuesGroup()
+        {
             DrawValue("Gravity", body.Vertical.Gravity);
             DrawValue("Speed", body.GetSpeeds());
             DrawValue("Velocity", body.Velocity);
             DrawValue("Position", body.CurrentPosition);
             DrawValue("Last Position", body.LastPosition);
-
-            GUI.EndGroup();
         }
 
-        private void DrawValue(string label, object value)
+        protected void DrawValue(string label, object value)
         {
             var position = new Vector2(8F, 8F + lines * GetLineHeight());
             var size = new Vector2(area.width, GetLineHeight());
