@@ -23,6 +23,16 @@ namespace ActionCode.Physics
         public event Action OnHitBackward;
 
         /// <summary>
+        /// Action fired when moving forward.
+        /// </summary>
+        public event Action OnMovingForward;
+
+        /// <summary>
+        /// Action fired when moving backward.
+        /// </summary>
+        public event Action OnMovingBackward;
+
+        /// <summary>
         /// Raycast information from the last forward hit.
         /// </summary>
         public IRaycastHit ForwardHit => positiveHit;
@@ -113,6 +123,9 @@ namespace ActionCode.Physics
 
         protected override void InvokeOnHitNegativeSide() => OnHitBackward?.Invoke();
         protected override void InvokeOnHitPositiveSide() => OnHitForward?.Invoke();
+
+        protected override void InvokeOnMovingPositiveSide() => OnMovingForward?.Invoke();
+        protected override void InvokeOnMovingNegativeSide() => OnMovingBackward?.Invoke();
 
         protected override Vector3 GetPositiveDirection() => Vector3.forward;
 

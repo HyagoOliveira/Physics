@@ -23,6 +23,16 @@ namespace ActionCode.Physics
         public event Action OnHitBottom;
 
         /// <summary>
+        /// Action fired when moving up.
+        /// </summary>
+        public event Action OnMovingUp;
+
+        /// <summary>
+        /// Action fired when moving down.
+        /// </summary>
+        public event Action OnMovingDown;
+
+        /// <summary>
         /// Raycast information from the last top hit.
         /// </summary>
         public IRaycastHit TopHit => positiveHit;
@@ -119,6 +129,9 @@ namespace ActionCode.Physics
 
         protected override void InvokeOnHitPositiveSide() => OnHitTop?.Invoke();
         protected override void InvokeOnHitNegativeSide() => OnHitBottom?.Invoke();
+
+        protected override void InvokeOnMovingPositiveSide() => OnMovingUp?.Invoke();
+        protected override void InvokeOnMovingNegativeSide() => OnMovingDown?.Invoke();
 
         protected override Vector3 GetPositiveDirection() => Vector3.up;
 

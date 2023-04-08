@@ -89,6 +89,11 @@ namespace ActionCode.Physics
         public Vector3 LastPosition { get; private set; }
 
         /// <summary>
+        /// The difference between <see cref="CurrentPosition"/> and <see cref="LastPosition"/>.
+        /// </summary>
+        public Vector3 DeltaPosition { get; private set; }
+
+        /// <summary>
         /// Whether was grounded in the last frame.
         /// </summary>
         public bool WasGrounded { get; private set; }
@@ -181,6 +186,7 @@ namespace ActionCode.Physics
 
         private void UpdatePhysics()
         {
+            WasGrounded = IsGrounded;
             LastPosition = currentPosition;
             currentPosition = transform.position;
 
@@ -188,7 +194,8 @@ namespace ActionCode.Physics
             UpdateVelocity();
             UpdatePosition();
 
-            WasGrounded = IsGrounded;
+            DeltaPosition = RemoveSmallValues(currentPosition - LastPosition);
+            UpdateAxesMovingEvents();
         }
 
         private void AddAxesListeners()
@@ -221,13 +228,20 @@ namespace ActionCode.Physics
             Distal.UpdatePhysics();
         }
 
+        private void UpdateAxesMovingEvents()
+        {
+            var isMovingAnySide = DeltaPosition.sqrMagnitude > 0f;
+            if (!isMovingAnySide) return;
+
+            Horizontal.InvokeMovingEvent();
+            Vertical.InvokeMovingEvent();
+            Distal.InvokeMovingEvent();
+        }
+
         private void UpdatePosition()
         {
             currentPosition += Velocity;
             transform.position = currentPosition;
-
-            //DeltaPosition = RemoveSmallValues(currentPosition - LastPosition);
-            //IsMovingAnySide = DeltaPosition.sqrMagnitude > 0f;
         }
 
         private void UpdateMovingPlatformPosition()

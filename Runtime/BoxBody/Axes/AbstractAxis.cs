@@ -269,6 +269,12 @@ namespace ActionCode.Physics
             UpdateMovingPlatformCollisions();
         }
 
+        internal void InvokeMovingEvent()
+        {
+            if (IsMovingToNegativeSide()) InvokeOnMovingNegativeSide();
+            else if (IsMovingToPositiveSide()) InvokeOnMovingPositiveSide();
+        }
+
         internal virtual void UpdatePositionUsingMovingPlatform(ref Vector3 position)
         {
             if (IsUsingMovingPlatform()) position += platform.Velocity;
@@ -300,6 +306,9 @@ namespace ActionCode.Physics
 
         protected abstract void InvokeOnHitNegativeSide();
         protected abstract void InvokeOnHitPositiveSide();
+
+        protected abstract void InvokeOnMovingNegativeSide();
+        protected abstract void InvokeOnMovingPositiveSide();
 
         protected abstract void RotateToNegativeSide();
         protected abstract void RotateToPositiveSide();

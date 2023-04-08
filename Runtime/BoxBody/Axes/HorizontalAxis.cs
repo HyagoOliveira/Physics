@@ -23,6 +23,16 @@ namespace ActionCode.Physics
         public event Action OnHitRight;
 
         /// <summary>
+        /// Action fired when moving right.
+        /// </summary>
+        public event Action OnMovingRight;
+
+        /// <summary>
+        /// Action fired when moving left.
+        /// </summary>
+        public event Action OnMovingLeft;
+
+        /// <summary>
         /// Raycast information from the last left hit.
         /// </summary>
         public IRaycastHit LeftHit => negativeHit;
@@ -50,8 +60,6 @@ namespace ActionCode.Physics
         /// </summary>
         /// <returns><inheritdoc cref="IsCollisionLeft"/></returns>
         public bool IsCollisionRight() => IsCollisionOnPositiveSide();
-
-
 
         /// <summary>
         /// Check if moving leftwards.
@@ -131,6 +139,9 @@ namespace ActionCode.Physics
 
         protected override void InvokeOnHitNegativeSide() => OnHitLeft?.Invoke();
         protected override void InvokeOnHitPositiveSide() => OnHitRight?.Invoke();
+
+        protected override void InvokeOnMovingNegativeSide() => OnMovingLeft?.Invoke();
+        protected override void InvokeOnMovingPositiveSide() => OnMovingRight?.Invoke();
 
         protected override void RotateToNegativeSide() => RotateToLeft();
         protected override void RotateToPositiveSide() => RotateToRight();
