@@ -34,6 +34,7 @@ namespace ActionCode.Physics
         protected virtual void DrawValuesGroup()
         {
             DrawValue("Gravity", body.Vertical.Gravity);
+            DrawValue("IsGrounded", body.IsGrounded);
             DrawValue("Speed", body.GetSpeeds());
             DrawValue("Velocity", body.Velocity);
             DrawValue("Position", body.CurrentPosition);
