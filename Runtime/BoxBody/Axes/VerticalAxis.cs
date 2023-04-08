@@ -159,7 +159,7 @@ namespace ActionCode.Physics
 
         private void UpdateNegativeCollisionUsingSlope()
         {
-            const float additionalSlopeDistance = 1F;
+            const float additionalSlopeDistance = 0.5F;
 
             var points = GetCollisionPoints();
             var distance = GetHalfScale() + additionalSlopeDistance;
