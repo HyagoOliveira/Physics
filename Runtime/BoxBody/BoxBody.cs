@@ -256,9 +256,7 @@ namespace ActionCode.Physics
 
             transform.position = latePosition;
 
-            Physics2D.SyncTransforms();
-            //TODO put this code inside AbstractColliderAdapter
-            //UnityEngine.Physics.SyncTransforms();
+            Collider.SyncTransforms();
         }
 
         private void InvokeOnHitAnySide() => OnHitAnySide?.Invoke();
