@@ -5,7 +5,7 @@
 * Current version: **0.1.0**
 * License: **MIT**
 * Dependencies:
-	- [com.actioncode.collider-adapter : 3.0.0](https://github.com/HyagoOliveira/Collider-Adapter/tree/3.0.0)
+	- [com.actioncode.collider-adapter : 3.1.0](https://github.com/HyagoOliveira/Collider-Adapter/tree/3.1.0)
 	- [com.actioncode.shapes : 1.2.0](https://github.com/HyagoOliveira/Shapes/tree/1.2.0)
 
 ## Summary
