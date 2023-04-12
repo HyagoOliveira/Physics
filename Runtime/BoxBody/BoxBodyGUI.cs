@@ -14,7 +14,11 @@ namespace ActionCode.Physics
         private int lines;
         private GUIStyle style;
 
-        protected virtual void Reset() => body = GetComponent<BoxBody>();
+        protected virtual void Reset()
+        {
+            title = gameObject.name;
+            body = GetComponent<BoxBody>();
+        }
 
         private void OnGUI()
         {
