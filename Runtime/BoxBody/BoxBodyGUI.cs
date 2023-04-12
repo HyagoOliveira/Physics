@@ -9,7 +9,7 @@ namespace ActionCode.Physics
     {
         [SerializeField] protected BoxBody body;
         [SerializeField] protected string title = "BoxBody";
-        [SerializeField] protected Rect area = new Rect(60f, 30f, 220f, 120f);
+        [SerializeField] protected Rect area = new Rect(60f, 30f, 220f, 140f);
 
         private int lines;
         private GUIStyle style;
