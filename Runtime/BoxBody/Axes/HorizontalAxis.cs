@@ -9,8 +9,10 @@ namespace ActionCode.Physics
     [Serializable]
     public sealed class HorizontalAxis : AbstractAxis
     {
-        private readonly Quaternion leftRotation = Quaternion.Euler(Vector3.up * -180F);
-        private readonly Quaternion rightRotation = Quaternion.identity;
+        [SerializeField, Tooltip("The rotation facing the left side.")]
+        private Vector3 leftRotation;
+        [SerializeField, Tooltip("The rotation facing the right side.")]
+        private Vector3 rightRotation;
 
         /// <summary>
         /// Action fired when the <see cref="BoxBody"/> stops after colliding using the left side.
@@ -41,6 +43,16 @@ namespace ActionCode.Physics
         /// Raycast information from the last right hit.
         /// </summary>
         public IRaycastHit RightHit => positiveHit;
+
+        internal override void Reset(BoxBody body)
+        {
+            base.Reset(body);
+
+            rightRotation = body.transform.eulerAngles;
+            leftRotation = -rightRotation;
+
+            if (Mathf.Approximately(leftRotation.y, 0f)) leftRotation = Vector3.up * -180f;
+        }
 
         public override bool CanMove(Vector3 direction)
         {
@@ -100,12 +112,12 @@ namespace ActionCode.Physics
         /// <summary>
         /// Rotates to the left.
         /// </summary>
-        public void RotateToLeft() => Body.transform.rotation = leftRotation;
+        public void RotateToLeft() => Body.transform.rotation = Quaternion.Euler(leftRotation);
 
         /// <summary>
         /// Rotates to the right.
         /// </summary>
-        public void RotateToRight() => Body.transform.rotation = rightRotation;
+        public void RotateToRight() => Body.transform.rotation = Quaternion.Euler(rightRotation);
 
         public override void UpdateCollisions()
         {
