@@ -165,6 +165,16 @@ namespace ActionCode.Physics
             Distal.IsEnabledAndUsingMovingPlatform();
 
         /// <summary>
+        /// Stops the speed from all axes.
+        /// </summary>
+        public void StopSpeeds()
+        {
+            Horizontal.StopSpeed();
+            Vertical.StopSpeed();
+            Distal.StopSpeed();
+        }
+
+        /// <summary>
         /// Enables collisions in all axes.
         /// </summary>
         public void EnableCollisions()
