@@ -77,7 +77,7 @@ namespace ActionCode.Physics
             {
                 useMovingPlatform = value;
                 if (!UseMovingPlatform && IsUsingMovingPlatform())
-                    platform = null;
+                    ResetMovingPlatform();
             }
         }
 
@@ -181,6 +181,10 @@ namespace ActionCode.Physics
         /// <returns>True if using a <see cref="MovingPlatform"/>. False otherwise.</returns>
         public bool IsUsingMovingPlatform() => platform;
 
+        /// <summary>
+        /// Whether this axis is Enabled and using a moving platform.
+        /// </summary>
+        /// <returns></returns>
         public bool IsEnabledAndUsingMovingPlatform() => Enabled && IsUsingMovingPlatform();
 
         /// <summary>
@@ -321,6 +325,8 @@ namespace ActionCode.Physics
 
         protected abstract Vector3 GetPositiveDirection();
         protected abstract (Vector3 one, Vector3 two) GetCollisionPoints();
+
+        internal void ResetMovingPlatform() => platform = null;
 
         private void UpdateGravity()
         {

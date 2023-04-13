@@ -146,8 +146,25 @@ namespace ActionCode.Physics
         private void Awake() => currentPosition = transform.position;
         private void FixedUpdate() => UpdatePhysics();
         private void LateUpdate() => UpdateMovingPlatformPosition();
-        private void OnEnable() => AddAxesListeners();
-        private void OnDisable() => RemoveAxesListeners();
+
+        private void OnEnable()
+        {
+            Horizontal.OnHitAnySide += InvokeOnHitAnySide;
+            Vertical.OnHitAnySide += InvokeOnHitAnySide;
+            Distal.OnHitAnySide += InvokeOnHitAnySide;
+        }
+
+        private void OnDisable()
+        {
+            Horizontal.OnHitAnySide -= InvokeOnHitAnySide;
+            Vertical.OnHitAnySide -= InvokeOnHitAnySide;
+            Distal.OnHitAnySide -= InvokeOnHitAnySide;
+
+            Horizontal.ResetMovingPlatform();
+            Vertical.ResetMovingPlatform();
+            Distal.ResetMovingPlatform();
+        }
+
         private void OnValidate() => ValidateAxes();
 
         public Vector3 GetSpeeds()
@@ -206,20 +223,6 @@ namespace ActionCode.Physics
 
             DeltaPosition = RemoveSmallValues(currentPosition - LastPosition);
             UpdateAxesMovingEvents();
-        }
-
-        private void AddAxesListeners()
-        {
-            Horizontal.OnHitAnySide += InvokeOnHitAnySide;
-            Vertical.OnHitAnySide += InvokeOnHitAnySide;
-            Distal.OnHitAnySide += InvokeOnHitAnySide;
-        }
-
-        private void RemoveAxesListeners()
-        {
-            Horizontal.OnHitAnySide -= InvokeOnHitAnySide;
-            Vertical.OnHitAnySide -= InvokeOnHitAnySide;
-            Distal.OnHitAnySide -= InvokeOnHitAnySide;
         }
 
         private void ValidateAxes()
