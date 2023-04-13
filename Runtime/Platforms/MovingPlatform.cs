@@ -9,6 +9,7 @@ namespace ActionCode.Physics
     /// </para>
     /// </summary>
     [DisallowMultipleComponent]
+    [DefaultExecutionOrder(-1)]
     public sealed class MovingPlatform : MonoBehaviour
     {
         /// <summary>
