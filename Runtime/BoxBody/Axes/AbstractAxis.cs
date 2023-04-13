@@ -330,6 +330,8 @@ namespace ActionCode.Physics
 
         private void RestrictCollisions()
         {
+            if (IsCollisionsDisabled) return;
+
             RestrictCollisionsUsingPushingColliders();
             RestrictCollisionsUsingMovement();
         }
