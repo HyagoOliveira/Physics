@@ -160,9 +160,9 @@ namespace ActionCode.Physics
             Vertical.OnHitAnySide -= InvokeOnHitAnySide;
             Distal.OnHitAnySide -= InvokeOnHitAnySide;
 
-            Horizontal.ResetMovingPlatform();
-            Vertical.ResetMovingPlatform();
-            Distal.ResetMovingPlatform();
+            Horizontal.Disable();
+            Vertical.Disable();
+            Distal.Disable();
         }
 
         private void OnValidate() => ValidateAxes();

@@ -326,7 +326,22 @@ namespace ActionCode.Physics
         protected abstract Vector3 GetPositiveDirection();
         protected abstract (Vector3 one, Vector3 two) GetCollisionPoints();
 
-        internal void ResetMovingPlatform() => platform = null;
+        internal void Disable()
+        {
+            ResetCollisions();
+            ResetMovingPlatform();
+        }
+
+        private void ResetCollisions()
+        {
+            isNegativeCollision = false;
+            isPositiveCollision = false;
+
+            negativeHit = null;
+            positiveHit = null;
+        }
+
+        private void ResetMovingPlatform() => platform = null;
 
         private void UpdateGravity()
         {
