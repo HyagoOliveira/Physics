@@ -228,7 +228,7 @@ namespace ActionCode.Physics
         /// <summary>
         /// Update all axis collisions.
         /// </summary>
-        public virtual void UpdateCollisions()
+        public void UpdateCollisions()
         {
             if (IsCollisionsDisabled) return;
 
@@ -261,6 +261,8 @@ namespace ActionCode.Physics
                 RaysCount,
                 DrawCollisions
             );
+
+            ExitUpdateCollisions();
         }
 
         internal void UpdatePhysics()
@@ -283,6 +285,8 @@ namespace ActionCode.Physics
         {
             if (IsUsingMovingPlatform()) position += platform.Velocity;
         }
+
+        protected virtual void ExitUpdateCollisions() { }
 
         protected bool IsMovingToNegativeSide() => Speed < 0F;
         protected bool IsMovingToPositiveSide() => Speed > 0F;

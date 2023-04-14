@@ -107,14 +107,7 @@ namespace ActionCode.Physics
         /// </summary>
         public void RotateToDown() => Body.transform.rotation = downRotation;
 
-        public override void UpdateCollisions()
-        {
-            var wasOverSlope = IsOverSlope();
-
-            base.UpdateCollisions();
-
-            if (wasOverSlope) UpdateNegativeCollisionUsingSlope();
-        }
+        const float additionalSlopeDistance = 0.5F;
 
         internal override void Reset(BoxBody body)
         {
@@ -156,32 +149,5 @@ namespace ActionCode.Physics
         protected override void SetCollisionPoint(float point) => Body.currentPosition.y = point;
 
         protected override bool IsCollisionWithMovingPlatform() => IsNegativeCollisionWithMovingPlatform();
-
-        private void UpdateNegativeCollisionUsingSlope()
-        {
-            const float additionalSlopeDistance = 0.5F;
-
-            var points = GetCollisionPoints();
-            var distance = GetHalfScale() + additionalSlopeDistance;
-
-            isNegativeCollision = Body.Collider.Raycasts(
-                points.one,
-                points.two,
-                Vector3.down,
-                out negativeHit,
-                distance,
-                Body.Collisions,
-                RaysCount,
-                DrawCollisions
-            );
-        }
-
-        private bool IsOverSlope()
-        {
-            if (BottomHit == null || IsMovingUp() || !IsCollisionDown()) return false;
-
-            var floorAngle = Vector3.Angle(BottomHit.Normal, Vector3.up);
-            return floorAngle > 0F && floorAngle < Body.SlopeLimit;
-        }
     }
 }

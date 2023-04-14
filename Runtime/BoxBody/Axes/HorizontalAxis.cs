@@ -119,17 +119,16 @@ namespace ActionCode.Physics
         /// </summary>
         public void RotateToRight() => Body.transform.rotation = Quaternion.Euler(rightRotation);
 
-        public override void UpdateCollisions()
-        {
-            base.UpdateCollisions();
-
-            isNegativeCollision = isNegativeCollision && IsAllowedAngle(negativeHit.Normal);
-            isPositiveCollision = isPositiveCollision && IsAllowedAngle(positiveHit.Normal);
-        }
-
         internal override void UpdatePositionUsingMovingPlatform(ref Vector3 position)
         {
             if (IsUsingMovingPlatform()) position.x += platform.Velocity.x;
+        }
+
+        protected override void ExitUpdateCollisions()
+        {
+            base.ExitUpdateCollisions();
+            isNegativeCollision = isNegativeCollision && IsAllowedAngle(negativeHit.Normal);
+            isPositiveCollision = isPositiveCollision && IsAllowedAngle(positiveHit.Normal);
         }
 
         protected override Vector3 GetPositiveDirection() => Vector3.right;
