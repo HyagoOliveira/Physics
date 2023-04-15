@@ -107,7 +107,6 @@ namespace ActionCode.Physics
         /// </summary>
         public void RotateToDown() => Body.transform.rotation = downRotation;
 
-        const float additionalSlopeDistance = 0.5F;
 
         internal override void Reset(BoxBody body)
         {
@@ -125,6 +124,12 @@ namespace ActionCode.Physics
 
         protected override void InvokeOnMovingPositiveSide() => OnMovingUp?.Invoke();
         protected override void InvokeOnMovingNegativeSide() => OnMovingDown?.Invoke();
+
+        protected override float GetSlopeDistance()
+        {
+            const float slopeDistance = 0.5F;
+            return IsMoving() ? 0F : slopeDistance;
+        }
 
         protected override Vector3 GetPositiveDirection() => Vector3.up;
 

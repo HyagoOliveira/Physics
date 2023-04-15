@@ -236,8 +236,8 @@ namespace ActionCode.Physics
             var distance = GetHalfScale() + COLLISION_SKIN;
             var speedPerFrame = Mathf.Abs(Speed * Time.deltaTime);
             var distanceUsingSpeed = distance + speedPerFrame;
-            var negativeDistance = IsMovingToNegativeSide() ? distanceUsingSpeed : distance;
             var positiveDistance = IsMovingToPositiveSide() ? distanceUsingSpeed : distance;
+            var negativeDistance = IsMovingToNegativeSide() ? distanceUsingSpeed : distance + GetSlopeDistance();
 
             if (DrawCollisions) Debug.DrawLine(points.one, points.two, Color.green);
 
@@ -310,7 +310,7 @@ namespace ActionCode.Physics
         protected virtual bool IsValidNegativeCollision() => true;
         protected virtual bool IsValidPositiveCollision() => true;
 
-        protected float GetCollisionDistance() => GetHalfScale() + COLLISION_SKIN;
+        protected virtual float GetSlopeDistance() => 0f;
 
         protected abstract void InvokeOnHitNegativeSide();
         protected abstract void InvokeOnHitPositiveSide();
