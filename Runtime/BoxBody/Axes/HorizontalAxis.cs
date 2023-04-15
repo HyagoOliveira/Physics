@@ -124,12 +124,8 @@ namespace ActionCode.Physics
             if (IsUsingMovingPlatform()) position.x += platform.Velocity.x;
         }
 
-        protected override void ExitUpdateCollisions()
-        {
-            base.ExitUpdateCollisions();
-            isNegativeCollision = isNegativeCollision && IsAllowedAngle(negativeHit.Normal);
-            isPositiveCollision = isPositiveCollision && IsAllowedAngle(positiveHit.Normal);
-        }
+        protected override bool IsValidNegativeCollision() => IsAllowedAngle(negativeHit.Normal);
+        protected override bool IsValidPositiveCollision() => IsAllowedAngle(positiveHit.Normal);
 
         protected override Vector3 GetPositiveDirection() => Vector3.right;
 

@@ -142,8 +142,8 @@ namespace ActionCode.Physics
 
         protected MovingPlatform platform;
 
-        protected bool isNegativeCollision;
-        protected bool isPositiveCollision;
+        private bool isNegativeCollision;
+        private bool isPositiveCollision;
 
         private float speed;
 
@@ -236,8 +236,8 @@ namespace ActionCode.Physics
             var distance = GetHalfScale() + COLLISION_SKIN;
             var speedPerFrame = Mathf.Abs(Speed * Time.deltaTime);
             var distanceUsingSpeed = distance + speedPerFrame;
-            var negativeDistance = GetNegativeDistance(distanceUsingSpeed, distance);
-            var positiveDistance = GetPositiveDistance(distanceUsingSpeed, distance);
+            var negativeDistance = IsMovingToNegativeSide() ? distanceUsingSpeed : distance;
+            var positiveDistance = IsMovingToPositiveSide() ? distanceUsingSpeed : distance;
 
             if (DrawCollisions) Debug.DrawLine(points.one, points.two, Color.green);
 
@@ -250,7 +250,8 @@ namespace ActionCode.Physics
                 Body.Collisions,
                 RaysCount,
                 DrawCollisions
-            );
+            ) && IsValidNegativeCollision();
+
             isPositiveCollision = Body.Collider.Raycasts(
                 points.one,
                 points.two,
@@ -260,9 +261,7 @@ namespace ActionCode.Physics
                 Body.Collisions,
                 RaysCount,
                 DrawCollisions
-            );
-
-            ExitUpdateCollisions();
+            ) && IsValidPositiveCollision();
         }
 
         internal void UpdatePhysics()
@@ -286,8 +285,6 @@ namespace ActionCode.Physics
             if (IsUsingMovingPlatform()) position += platform.Velocity;
         }
 
-        protected virtual void ExitUpdateCollisions() { }
-
         protected bool IsMovingToNegativeSide() => Speed < 0F;
         protected bool IsMovingToPositiveSide() => Speed > 0F;
 
@@ -310,10 +307,8 @@ namespace ActionCode.Physics
             IsNegativeCollisionWithMovingPlatform() ||
             IsPositiveCollisionWithMovingPlatform();
 
-        protected virtual float GetNegativeDistance(float distanceUsingSpeed, float distance) =>
-            IsMovingToNegativeSide() ? distanceUsingSpeed : distance;
-        protected virtual float GetPositiveDistance(float distanceUsingSpeed, float distance) =>
-            IsMovingToPositiveSide() ? distanceUsingSpeed : distance;
+        protected virtual bool IsValidNegativeCollision() => true;
+        protected virtual bool IsValidPositiveCollision() => true;
 
         protected float GetCollisionDistance() => GetHalfScale() + COLLISION_SKIN;
 

@@ -107,11 +107,7 @@ namespace ActionCode.Physics
         /// </summary>
         public void RotateToDown() => Body.transform.rotation = downRotation;
 
-        protected override float GetNegativeDistance(float distanceUsingSpeed, float distance)
-        {
-            const float additionalSlopeDistance = 0.5F;
-            return base.GetNegativeDistance(distanceUsingSpeed, distance + additionalSlopeDistance);
-        }
+        const float additionalSlopeDistance = 0.5F;
 
         internal override void Reset(BoxBody body)
         {
