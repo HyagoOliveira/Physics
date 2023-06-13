@@ -4,7 +4,7 @@ using ActionCode.Shapes;
 namespace ActionCode.Physics
 {
     /// <summary>
-    /// Casts a Box, filtering by the <see cref="layers"/>.
+    /// Casts a Box, filtering by the Collisions layers.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class BoxCaster : AbstractCaster
@@ -30,7 +30,7 @@ namespace ActionCode.Physics
                 out hit,
                 GetCastOrientation(),
                 Distance,
-                Layers
+                Collisions
             );
         }
 
@@ -38,7 +38,7 @@ namespace ActionCode.Physics
         {
             var origin = GetCastOrigin();
             var end = origin + GetCastDirection() * Distance;
-            var color = HasHit ? Color.red : Color.green;
+            var color = GetDrawColor();
 
             Debug.DrawLine(origin, end, color);
             ShapeDebug.DrawCuboid(end, size, GetCastOrientation(), color);

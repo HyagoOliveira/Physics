@@ -19,9 +19,9 @@ namespace ActionCode.Physics
         float Distance { get; set; }
 
         /// <summary>
-        /// The layers used on the cast.
+        /// The layers used on the cast collision.
         /// </summary>
-        LayerMask Layers { get; set; }
+        LayerMask Collisions { get; set; }
 
         /// <summary>
         /// Event fired every time a hit changes.

@@ -11,8 +11,8 @@ namespace ActionCode.Physics
     /// </summary>
     public abstract class AbstractCaster : MonoBehaviour, ICasterable
     {
-        [SerializeField, Tooltip("The layers used on the cast.")]
-        private LayerMask layers;
+        [SerializeField, Tooltip("The layers used on the cast collision.")]
+        private LayerMask collisions;
         [SerializeField, Min(0f), Tooltip("The maximum distance used on the cast.")]
         private float distance = 10F;
 
@@ -20,10 +20,10 @@ namespace ActionCode.Physics
 
         public bool HasHit { get; private set; }
 
-        public LayerMask Layers
+        public LayerMask Collisions
         {
-            get => layers;
-            set => layers = value;
+            get => collisions;
+            set => collisions = value;
         }
 
         public float Distance
@@ -57,6 +57,8 @@ namespace ActionCode.Physics
 
         protected abstract void DrawCast();
         protected abstract bool Cast(out RaycastHit hit);
+
+        protected Color GetDrawColor() => HasHit ? Color.red : Color.green;
 
         private void UpdateCast()
         {
