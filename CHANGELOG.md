@@ -5,11 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- ScreenCenterCaster component
+- BoxCaster component
+- IEnable interface
 
 ## [0.1.0] - 2022-05-08
 ### Added
-- BoxCaster component
-- IEnable interface
 - BoxBodyGUI component
 - BoxBody component
 - Axes classes
