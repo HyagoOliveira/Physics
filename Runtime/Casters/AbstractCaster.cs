@@ -36,6 +36,7 @@ namespace ActionCode.Physics
         private RaycastHit currentHit;
 
         private void Update() => UpdateCast();
+        private void OnDisable() => lastHit = default;
         private void OnDrawGizmosSelected() => DrawCast();
 
         public bool TryGetEnabledComponent<T>(out T component) where T : IEnable
@@ -62,12 +63,12 @@ namespace ActionCode.Physics
 
         private void UpdateCast()
         {
-            lastHit = currentHit;
-
             HasHit = Cast(out currentHit);
 
             var hasHitChanged = currentHit.transform != lastHit.transform;
             if (hasHitChanged) OnHitChanged?.Invoke(currentHit);
+
+            lastHit = currentHit;
         }
     }
 }
