@@ -1,7 +1,7 @@
 {
   "name": "com.actioncode.physics",
   "displayName": "ActionCode-Physics",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "unity": "2019.3",
   "description": "This package controls physical simulation for GameObject bodies using Raycasts.",
   "keywords": [
