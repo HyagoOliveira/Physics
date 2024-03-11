@@ -101,6 +101,16 @@ namespace ActionCode.Physics
         public bool IsCollisionsDisabled { get; private set; }
 
         /// <summary>
+        /// Whether climbing a ladder.
+        /// </summary>
+        public bool IsClimbingLadder { get; set; }
+
+        /// <summary>
+        /// Whether climbing a zipline.
+        /// </summary>
+        public bool IsClimbingZipline { get; set; }
+
+        /// <summary>
         /// The number of raycasts for this axis.
         /// </summary>
         public int RaysCount

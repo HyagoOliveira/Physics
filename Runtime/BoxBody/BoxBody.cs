@@ -211,6 +211,15 @@ namespace ActionCode.Physics
             Distal.DisableCollisions();
         }
 
+        public void SetPositionY(float y)
+        {
+            var position = transform.position;
+            position.y = y;
+            transform.position = position;
+        }
+
+        public void AddPositionY(float value) => SetPositionY(transform.position.y + value);
+
         private void UpdatePhysics()
         {
             WasGrounded = IsGrounded;

@@ -107,6 +107,28 @@ namespace ActionCode.Physics
         /// </summary>
         public void RotateToDown() => Body.transform.rotation = downRotation;
 
+        public void FixOnGround()
+        {
+            var bounds = Body.Collider.Bounds;
+            var distance = bounds.size.y;
+            var middleCenter = bounds.center;
+            var leftTop = new Vector3(bounds.min.x, bounds.max.y, middleCenter.z);
+            var rightTop = new Vector3(bounds.max.x, bounds.max.y, middleCenter.z);
+
+            var isBottomCollision = Body.Collider.Raycasts(
+                leftTop,
+                rightTop,
+                Vector3.down,
+                out IRaycastHit bottomHit,
+                distance,
+                Body.Collisions,
+                RaysCount
+            );
+
+            if (!isBottomCollision) return;
+
+            Body.SetPositionY(bottomHit.Point.y);
+        }
 
         internal override void Reset(BoxBody body)
         {
