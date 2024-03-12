@@ -125,6 +125,39 @@ namespace ActionCode.Physics
             get => collisions;
             set => collisions = value;
         }
+
+        public float Width
+        {
+            get => Collider.Size.x;
+            set
+            {
+                var size = Collider.Size;
+                size.x = value;
+                Collider.Size = size;
+            }
+        }
+
+        public float Height
+        {
+            get => Collider.Size.y;
+            set
+            {
+                var size = Collider.Size;
+                size.y = value;
+                Collider.Size = size;
+            }
+        }
+
+        public float Depth
+        {
+            get => Collider.Size.z;
+            set
+            {
+                var size = Collider.Size;
+                size.z = value;
+                Collider.Size = size;
+            }
+        }
         #endregion // Properties
 
         #region Constants
