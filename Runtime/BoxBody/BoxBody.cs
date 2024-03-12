@@ -19,7 +19,7 @@ namespace ActionCode.Physics
         private AbstractColliderAdapter collider;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
-        [SerializeField, Tooltip("The layer mask collisions. Only layers on this mask will be used on this axis.")]
+        [SerializeField, Tooltip("The layer mask collisions used on the axes.")]
         private LayerMask collisions;
         [SerializeField, Range(minSlopeLimit, maxSlopeLimit), Tooltip("The maximum angle limit (in degrees) of a valid slope.")]
         private float slopeLimit = 45F;

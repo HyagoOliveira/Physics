@@ -9,6 +9,9 @@ namespace ActionCode.Physics
     [Serializable]
     public sealed class VerticalAxis : AbstractAxis
     {
+        [SerializeField, Tooltip("The layer mask collisions used for the bottom hit detection.")]
+        private LayerMask bottomCollisions;
+
         private readonly Quaternion upRotation = Quaternion.identity;
         private readonly Quaternion downRotation = Quaternion.Euler(Vector3.right * -180F);
 
@@ -41,6 +44,11 @@ namespace ActionCode.Physics
         /// Raycast information from the last bottom hit.
         /// </summary>
         public IRaycastHit BottomHit => negativeHit;
+
+        /// <summary>
+        /// The layer mask collisions used for the bottom hit detection.
+        /// </summary>
+        public LayerMask BottomCollisions => bottomCollisions;
 
         public override bool CanMove(Vector3 direction)
         {
@@ -135,6 +143,7 @@ namespace ActionCode.Physics
             base.Reset(body);
             UseGravity = true;
             Gravity = Physics2D.gravity.y;
+            bottomCollisions = body.Collisions;
         }
 
         protected override float GetHalfScale() => Body.Collider.HalfSize.y;
@@ -172,6 +181,8 @@ namespace ActionCode.Physics
 
         protected override void RotateToPositiveSide() => RotateToUp();
         protected override void RotateToNegativeSide() => RotateToDown();
+
+        protected override int GetNegativeCollisions() => bottomCollisions;
 
         protected override void SetCollisionPoint(float point) => Body.currentPosition.y = point;
 

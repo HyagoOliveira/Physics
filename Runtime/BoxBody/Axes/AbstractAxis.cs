@@ -257,7 +257,7 @@ namespace ActionCode.Physics
                 -GetPositiveDirection(),
                 out negativeHit,
                 negativeDistance,
-                Body.Collisions,
+                GetNegativeCollisions(),
                 RaysCount,
                 DrawCollisions
             ) && IsValidNegativeCollision();
@@ -268,7 +268,7 @@ namespace ActionCode.Physics
                 GetPositiveDirection(),
                 out positiveHit,
                 positiveDistance,
-                Body.Collisions,
+                GetPositiveCollisions(),
                 RaysCount,
                 DrawCollisions
             ) && IsValidPositiveCollision();
@@ -319,6 +319,9 @@ namespace ActionCode.Physics
 
         protected virtual bool IsValidNegativeCollision() => true;
         protected virtual bool IsValidPositiveCollision() => true;
+
+        protected virtual int GetNegativeCollisions() => Body.Collisions;
+        protected virtual int GetPositiveCollisions() => Body.Collisions;
 
         protected virtual float GetSlopeDistance() => 0f;
 
