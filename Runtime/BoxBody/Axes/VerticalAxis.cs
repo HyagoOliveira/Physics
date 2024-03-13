@@ -115,6 +115,21 @@ namespace ActionCode.Physics
         /// </summary>
         public void RotateToDown() => Body.transform.rotation = downRotation;
 
+        /// <summary>
+        /// Adds the given layer mask into <see cref="BottomCollisions"/> mask.
+        /// </summary>
+        /// <param name="mask">A layer mask to add. This should be a <see cref="LayerMask"/> not a <see cref="int"/>.</param>
+        public void AddToBottomCollisions(LayerMask mask) => bottomCollisions |= (1 << LayerMaskToLayer(mask));
+
+        /// <summary>
+        /// Removes the given layer mask into <see cref="BottomCollisions"/> mask.
+        /// </summary>
+        /// <param name="mask">A layer mask to remove. This should be a <see cref="LayerMask"/> not a <see cref="int"/>.</param>
+        public void RemoveFromBottomCollisions(LayerMask mask) => bottomCollisions &= ~(1 << LayerMaskToLayer(mask));
+
+        /// <summary>
+        /// Fix the body on the ground (the first bottom collision)
+        /// </summary>
         public void FixOnGround()
         {
             var bounds = Body.Collider.Bounds;
@@ -122,14 +137,13 @@ namespace ActionCode.Physics
             var middleCenter = bounds.center;
             var leftTop = new Vector3(bounds.min.x, bounds.max.y, middleCenter.z);
             var rightTop = new Vector3(bounds.max.x, bounds.max.y, middleCenter.z);
-
             var isBottomCollision = Body.Collider.Raycasts(
                 leftTop,
                 rightTop,
                 Vector3.down,
                 out IRaycastHit bottomHit,
                 distance,
-                Body.Collisions,
+                GetNegativeCollisions(),
                 RaysCount
             );
 
@@ -183,9 +197,9 @@ namespace ActionCode.Physics
         protected override void RotateToNegativeSide() => RotateToDown();
 
         protected override int GetNegativeCollisions() => bottomCollisions;
-
         protected override void SetCollisionPoint(float point) => Body.currentPosition.y = point;
-
         protected override bool IsCollisionWithMovingPlatform() => IsNegativeCollisionWithMovingPlatform();
+
+        private static int LayerMaskToLayer(LayerMask mask) => Mathf.RoundToInt(Mathf.Log(mask.value, 2));
     }
 }
