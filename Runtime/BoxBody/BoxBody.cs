@@ -246,9 +246,8 @@ namespace ActionCode.Physics
 
         public void SetPositionY(float y)
         {
-            var position = transform.position;
-            position.y = y;
-            transform.position = position;
+            currentPosition.y = y;
+            transform.position = currentPosition;
         }
 
         public void AddPositionY(float value) => SetPositionY(transform.position.y + value);
