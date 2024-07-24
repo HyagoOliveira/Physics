@@ -145,6 +145,8 @@ namespace ActionCode.Physics
             get => gravity;
             set => gravity = value;
         }
+
+        public float AbsoluteSpeed => Mathf.Abs(Speed);
         #endregion
 
         protected IRaycastHit negativeHit;
@@ -165,7 +167,7 @@ namespace ActionCode.Physics
         /// Whether has speed. 
         /// </summary>
         /// <returns>True if has speed. False otherwise.</returns>
-        public bool HasSpeed() => Mathf.Abs(Speed) > 0f;
+        public bool HasSpeed() => AbsoluteSpeed > 0f;
 
         /// <summary>
         /// Whether has gravity.

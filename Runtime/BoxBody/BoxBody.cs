@@ -101,7 +101,7 @@ namespace ActionCode.Physics
         /// <summary>
         /// Whether is grounded.
         /// </summary>
-        public bool IsGrounded => Vertical.IsCollisionDown();
+        public bool IsGrounded => Vertical.IsCollisionDown() && !Vertical.IsMovingUp();
 
         /// <summary>
         /// Whether is airborne.
