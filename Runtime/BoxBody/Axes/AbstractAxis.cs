@@ -101,16 +101,6 @@ namespace ActionCode.Physics
         public bool IsCollisionsDisabled { get; private set; }
 
         /// <summary>
-        /// Whether climbing a ladder.
-        /// </summary>
-        public bool IsClimbingLadder { get; set; }
-
-        /// <summary>
-        /// Whether climbing a zipline.
-        /// </summary>
-        public bool IsClimbingZipline { get; set; }
-
-        /// <summary>
         /// The number of raycasts for this axis.
         /// </summary>
         public int RaysCount
@@ -156,6 +146,8 @@ namespace ActionCode.Physics
 
         private bool isNegativeCollision;
         private bool isPositiveCollision;
+        private bool wasNegativeCollision;
+        private bool wasPositiveCollision;
 
         private float speed;
 
@@ -253,6 +245,9 @@ namespace ActionCode.Physics
 
             if (DrawCollisions) Debug.DrawLine(points.one, points.two, Color.green);
 
+            wasNegativeCollision = isNegativeCollision;
+            wasPositiveCollision = isPositiveCollision;
+
             isNegativeCollision = Body.Collider.Raycasts(
                 points.one,
                 points.two,
@@ -303,8 +298,17 @@ namespace ActionCode.Physics
         protected bool IsGravityPositive() => Gravity > 0F;
         protected bool IsGravityNegative() => Gravity < 0F;
 
+        protected bool WasCollisionOnNegativeSide() => wasNegativeCollision;
+        protected bool WasCollisionOnPositiveSide() => wasPositiveCollision;
+        protected bool IsMovingIntoNegativeCollision() =>
+            IsMovingToNegativeSide() && IsCollisionOnNegativeSide() ||
+            !WasCollisionOnNegativeSide() && IsCollisionOnNegativeSide();
+
         protected bool IsCollisionOnNegativeSide() => isNegativeCollision;
         protected bool IsCollisionOnPositiveSide() => isPositiveCollision;
+        protected bool IsMovingIntoPositiveCollision() =>
+            IsMovingToPositiveSide() && IsCollisionOnPositiveSide() ||
+            !WasCollisionOnPositiveSide() && IsCollisionOnPositiveSide();
 
         protected bool IsPushingColliderOnNegativeSide() => IsMovingToNegativeSide() && IsCollisionOnNegativeSide();
         protected bool IsPushingColliderOnPositiveSide() => IsMovingToPositiveSide() && IsCollisionOnPositiveSide();
@@ -398,8 +402,7 @@ namespace ActionCode.Physics
 
         private void RestrictCollisionsUsingMovement()
         {
-            var isMovingIntoNegativeSideCollision = IsMovingToNegativeSide() && IsCollisionOnNegativeSide();
-            if (isMovingIntoNegativeSideCollision)
+            if (IsMovingIntoNegativeCollision())
             {
                 SetCollisionPoint(GetOutOfCollisionPointOnNegativeSide());
 
@@ -410,8 +413,7 @@ namespace ActionCode.Physics
                 return;
             }
 
-            var isMovingIntoPositiveSideCollision = IsMovingToPositiveSide() && IsCollisionOnPositiveSide();
-            if (isMovingIntoPositiveSideCollision)
+            if (IsMovingIntoPositiveCollision())
             {
                 SetCollisionPoint(GetOutOfCollisionPointOnPositiveSide());
 
