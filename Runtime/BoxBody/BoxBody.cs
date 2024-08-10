@@ -209,6 +209,13 @@ namespace ActionCode.Physics
             );
         }
 
+        public void SetSpeeds(Vector3 speed)
+        {
+            Distal.Speed = speed.z;
+            Vertical.Speed = speed.y;
+            Horizontal.Speed = speed.x;
+        }
+
         public bool IsUsingMovingPlatform() =>
             Vertical.IsEnabledAndUsingMovingPlatform() ||
             Horizontal.IsEnabledAndUsingMovingPlatform() ||
