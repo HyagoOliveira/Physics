@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.3.0] - 2024-10-10
+### Changed
+- Improvements
+
 ## [0.2.1] - 2023-09-22
 ### Fixed
 - Hit changed detection after caster is disabled
@@ -27,7 +31,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - gitignore
 - Initial commit
 
-[Unreleased]: https://github.com/HyagoOliveira/Physics/compare/0.2.1...main
+[Unreleased]: https://github.com/HyagoOliveira/Physics/compare/0.3.0...main
+[0.3.0]: https://github.com/HyagoOliveira/Physics/tree/0.3.0/
 [0.2.1]: https://github.com/HyagoOliveira/Physics/tree/0.2.1/
 [0.2.0]: https://github.com/HyagoOliveira/Physics/tree/0.2.0/
 [0.1.0]: https://github.com/HyagoOliveira/Physics/tree/0.1.0/
