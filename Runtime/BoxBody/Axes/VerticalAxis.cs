@@ -152,6 +152,21 @@ namespace ActionCode.Physics
             Body.SetPositionY(bottomHit.Point.y);
         }
 
+        /// <summary>
+        /// Whether has collision on the given direction down border.
+        /// </summary>
+        /// <param name="facing">The facing direction (-1 = left. 1 = right).</param>
+        /// <returns></returns>
+        public bool IsFacingBottomBorderCollision(sbyte facing)
+        {
+            var bounds = Body.Collider.Bounds;
+            var offset = Vector3.up * COLLISION_OFFSET;
+            var horizontal = facing > 0 ? bounds.max.x : bounds.min.x;
+            var bottom = new Vector3(horizontal, bounds.min.y, bounds.center.z) + offset;
+
+            return IsCollisionDown(bottom);
+        }
+
         internal override void Reset(BoxBody body)
         {
             base.Reset(body);
@@ -199,6 +214,15 @@ namespace ActionCode.Physics
         protected override int GetNegativeCollisions() => bottomCollisions;
         protected override void SetCollisionPoint(float point) => Body.currentPosition.y = point;
         protected override bool IsCollisionWithMovingPlatform() => IsNegativeCollisionWithMovingPlatform();
+
+        private bool IsCollisionDown(Vector3 origin, float distance = COLLISION_OFFSET * 2F) =>
+            Body.Collider.Raycast(
+                origin,
+                Vector3.down,
+                out IRaycastHit _,
+                distance,
+                GetNegativeCollisions()
+            );
 
         private static int LayerMaskToLayer(LayerMask mask) => Mathf.RoundToInt(Mathf.Log(mask.value, 2));
     }

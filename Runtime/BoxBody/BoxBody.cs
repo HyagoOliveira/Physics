@@ -218,6 +218,13 @@ namespace ActionCode.Physics
             Distal.IsEnabledAndUsingMovingPlatform();
 
         /// <summary>
+        /// Whether has ground on the facing direction.
+        /// </summary>
+        /// <returns></returns>
+        public bool HasForwardGroundCollision() =>
+            Vertical.IsFacingBottomBorderCollision(Horizontal.GetFacingDirection());
+
+        /// <summary>
         /// Stops the speed from all axes.
         /// </summary>
         public void StopSpeeds()
