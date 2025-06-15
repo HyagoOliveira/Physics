@@ -62,6 +62,18 @@ namespace ActionCode.Physics
         }
 
         /// <summary>
+        /// Returns the current facing direction.
+        /// </summary>
+        /// <returns>-1 to left. 1 to right.</returns>
+        public sbyte GetFacingDirection()
+        {
+            var rotation = Body.transform.eulerAngles;
+            if (rotation == leftRotation) return -1;
+            if (rotation == rightRotation) return 1;
+            return 0;
+        }
+
+        /// <summary>
         /// Checks if colliding on left side. Triggers don't count as a solid collision.
         /// </summary>
         /// <returns>True if colliding. False otherwise.</returns>
@@ -118,6 +130,22 @@ namespace ActionCode.Physics
         /// Rotates to the right.
         /// </summary>
         public void RotateToRight() => Body.transform.rotation = Quaternion.Euler(rightRotation);
+
+        /// <summary>
+        /// Rotates to the opposing side.
+        /// </summary>
+        public void Turn()
+        {
+            var isFacingPositiveSide = GetFacingDirection() > 0;
+            if (isFacingPositiveSide) RotateToNegativeSide();
+            else RotateToPositiveSide();
+        }
+
+        /// <summary>
+        /// Moves to the current facing direction.
+        /// </summary>
+        /// <param name="speed">The speed to move.</param>
+        public void MoveForward(float speed) => Speed = GetFacingDirection() * speed;
 
         internal override void UpdatePositionUsingMovingPlatform(ref Vector3 position)
         {

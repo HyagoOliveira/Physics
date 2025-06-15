@@ -37,17 +37,10 @@ namespace ActionCode.Physics
         [ContextMenuItem("Reset", nameof(ResetDistal))]
         private DistalAxis distal = new DistalAxis();
 
-        #region Events
         /// <summary>
         /// Action fired when the RigidBody stops after colliding using any side.
         /// </summary>
         public event Action OnHitAnySide;
-
-        /// <summary>
-        /// Action fired when the RigidBody starts to move in any direction.
-        /// </summary>
-        //public event Action OnMoving;
-        #endregion // Events
 
         #region Properties
 
@@ -208,6 +201,9 @@ namespace ActionCode.Physics
                 Distal.Speed
             );
         }
+
+        public void TurnVertically() => Horizontal.Turn();
+        public void TurnHorizontally() => Horizontal.Turn();
 
         public void SetSpeeds(Vector3 speed)
         {
