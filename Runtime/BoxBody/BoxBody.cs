@@ -262,6 +262,35 @@ namespace ActionCode.Physics
 
         public void AddPositionY(float value) => SetPositionY(transform.position.y + value);
 
+        public void RoundPosition(float multiplier)
+        {
+            var position = transform.position;
+
+            Round(ref position.x, multiplier);
+            Round(ref position.y, multiplier);
+            Round(ref position.z, multiplier);
+
+            transform.position = position;
+        }
+
+        public void RoundHorizontalPosition(float multiplier)
+        {
+            var position = transform.position;
+
+            Round(ref position.x, multiplier);
+
+            transform.position = position;
+        }
+
+        public void RoundVerticalPosition(float multiplier)
+        {
+            var position = transform.position;
+
+            Round(ref position.y, multiplier);
+
+            transform.position = position;
+        }
+
         private void UpdatePhysics()
         {
             WasGrounded = IsGrounded;
@@ -344,5 +373,8 @@ namespace ActionCode.Physics
 
             return v;
         }
+
+        private static void Round(ref float value, float multiplier) =>
+            value = Mathf.Round(value / multiplier) * multiplier;
     }
 }
