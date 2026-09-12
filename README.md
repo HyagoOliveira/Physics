@@ -1,11 +1,10 @@
 # Physics
 
 * Physical simulation for GameObject bodies using Raycasts
-* Unity minimum version: **2019.3**
-* Current version: **0.4.0**
+* Unity minimum version: **6000.3**
 * License: **MIT**
 * Dependencies:
-	- [com.actioncode.collider-adapter : 3.1.0](https://github.com/HyagoOliveira/Collider-Adapter/tree/3.1.0)
+	- [com.actioncode.collider-adapter : 3.6.0](https://github.com/HyagoOliveira/Collider-Adapter/tree/3.6.0)
 	- [com.actioncode.shapes : 1.2.0](https://github.com/HyagoOliveira/Shapes/tree/1.2.0)
 
 ## Summary
