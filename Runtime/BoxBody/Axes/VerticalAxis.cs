@@ -48,7 +48,11 @@ namespace ActionCode.Physics
         /// <summary>
         /// The layer mask collisions used for the bottom hit detection.
         /// </summary>
-        public LayerMask BottomCollisions => bottomCollisions;
+        public LayerMask BottomCollisions
+        {
+            get => bottomCollisions;
+            set => bottomCollisions = value;
+        }
 
         public override bool CanMove(Vector3 direction)
         {
