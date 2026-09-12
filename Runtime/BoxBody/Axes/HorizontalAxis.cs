@@ -9,6 +9,10 @@ namespace ActionCode.Physics
     [Serializable]
     public sealed class HorizontalAxis : AbstractAxis
     {
+        [Tooltip("Whether to update the left collision detection.")]
+        public bool enableLeftCollision = true;
+        [Tooltip("Whether to update the right collision detection.")]
+        public bool enableRightCollision = true;
         [SerializeField, Tooltip("The rotation facing the left side.")]
         private Vector3 leftRotation;
         [SerializeField, Tooltip("The rotation facing the right side.")]
@@ -171,6 +175,9 @@ namespace ActionCode.Physics
 
             return (topCenter, bottomCenter);
         }
+
+        protected override bool CanUpdateNegativeCollision() => enableLeftCollision;
+        protected override bool CanUpdatePositiveCollision() => enableRightCollision;
 
         protected override void InvokeOnHitNegativeSide() => OnHitLeft?.Invoke();
         protected override void InvokeOnHitPositiveSide() => OnHitRight?.Invoke();

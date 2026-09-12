@@ -248,27 +248,31 @@ namespace ActionCode.Physics
             wasNegativeCollision = isNegativeCollision;
             wasPositiveCollision = isPositiveCollision;
 
-            isNegativeCollision = Body.Collider.Raycasts(
-                points.one,
-                points.two,
-                -GetPositiveDirection(),
-                out negativeHit,
-                negativeDistance,
-                GetNegativeCollisions(),
-                RaysCount,
-                DrawCollisions
-            ) && IsValidNegativeCollision();
+            isNegativeCollision = CanUpdateNegativeCollision() &&
+                Body.Collider.Raycasts(
+                    points.one,
+                    points.two,
+                    -GetPositiveDirection(),
+                    out negativeHit,
+                    negativeDistance,
+                    GetNegativeCollisions(),
+                    RaysCount,
+                    DrawCollisions
+                ) &&
+                IsValidNegativeCollision();
 
-            isPositiveCollision = Body.Collider.Raycasts(
-                points.one,
-                points.two,
-                GetPositiveDirection(),
-                out positiveHit,
-                positiveDistance,
-                GetPositiveCollisions(),
-                RaysCount,
-                DrawCollisions
-            ) && IsValidPositiveCollision();
+            isPositiveCollision = CanUpdatePositiveCollision() &&
+                Body.Collider.Raycasts(
+                    points.one,
+                    points.two,
+                    GetPositiveDirection(),
+                    out positiveHit,
+                    positiveDistance,
+                    GetPositiveCollisions(),
+                    RaysCount,
+                    DrawCollisions
+                ) &&
+                IsValidPositiveCollision();
         }
 
         internal void UpdatePhysics()
@@ -348,6 +352,9 @@ namespace ActionCode.Physics
 
         protected abstract Vector3 GetPositiveDirection();
         protected abstract (Vector3 one, Vector3 two) GetCollisionPoints();
+
+        protected abstract bool CanUpdateNegativeCollision();
+        protected abstract bool CanUpdatePositiveCollision();
 
         internal void Disable()
         {

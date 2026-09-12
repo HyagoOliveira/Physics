@@ -9,6 +9,10 @@ namespace ActionCode.Physics
     [Serializable]
     public sealed class DistalAxis : AbstractAxis
     {
+        [Tooltip("Whether to update the forward collision detection.")]
+        public bool enableForwardCollision = true;
+        [Tooltip("Whether to update the backward collision detection.")]
+        public bool enableBackwardCollision = true;
         private readonly Quaternion forwardRotation = Quaternion.identity;
         private readonly Quaternion backwardsRotation = Quaternion.Euler(Vector3.up * -180F);
 
@@ -144,6 +148,9 @@ namespace ActionCode.Physics
 
             return (topCenter, bottomCenter);
         }
+
+        protected override bool CanUpdatePositiveCollision() => enableForwardCollision;
+        protected override bool CanUpdateNegativeCollision() => enableBackwardCollision;
 
         protected override void RotateToPositiveSide() => RotateToForward();
         protected override void RotateToNegativeSide() => RotateToBackwards();

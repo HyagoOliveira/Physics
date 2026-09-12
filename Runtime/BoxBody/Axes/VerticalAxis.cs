@@ -9,6 +9,10 @@ namespace ActionCode.Physics
     [Serializable]
     public sealed class VerticalAxis : AbstractAxis
     {
+        [Tooltip("Whether to update the top collision detection.")]
+        public bool enableTopCollision = true;
+        [Tooltip("Whether to update the bottom collision detection.")]
+        public bool enableBottomCollision = true;
         [SerializeField, Tooltip("The layer mask collisions used for the bottom hit detection.")]
         private LayerMask bottomCollisions;
 
@@ -211,6 +215,9 @@ namespace ActionCode.Physics
 
             return (leftCenter, rightCenter);
         }
+
+        protected override bool CanUpdatePositiveCollision() => enableTopCollision;
+        protected override bool CanUpdateNegativeCollision() => enableBottomCollision;
 
         protected override void RotateToPositiveSide() => RotateToUp();
         protected override void RotateToNegativeSide() => RotateToDown();
