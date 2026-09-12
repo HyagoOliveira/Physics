@@ -1,6 +1,6 @@
+using ActionCode.ColliderAdapter;
 using System;
 using UnityEngine;
-using ActionCode.ColliderAdapter;
 
 namespace ActionCode.Physics
 {
@@ -252,6 +252,12 @@ namespace ActionCode.Physics
             Horizontal.DisableCollisions();
             Vertical.DisableCollisions();
             Distal.DisableCollisions();
+        }
+
+        public void SetPositionAndRotation(Vector3 position, Quaternion rotation)
+        {
+            currentPosition = position;
+            transform.SetPositionAndRotation(position, rotation);
         }
 
         public void SetPositionY(float y)
