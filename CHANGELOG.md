@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - ICollisionable interface
 - Attributes package dependency
 - Box2DDetector component
+- CollisionableUnityEvents component
 
 ## [0.4.1] - 2026-09-12
 ### Changed
