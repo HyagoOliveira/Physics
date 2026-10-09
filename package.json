@@ -9,6 +9,7 @@
   ],
   "category": "Physics",
   "dependencies": {
+    "com.actioncode.attributes": "3.6.0",
     "com.actioncode.collider-adapter": "3.6.0",
     "com.actioncode.shapes": "1.2.0"
   },

@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - ICollisionable interface
+- Attributes package dependency
 
 ## [0.4.1] - 2026-09-12
 ### Changed
