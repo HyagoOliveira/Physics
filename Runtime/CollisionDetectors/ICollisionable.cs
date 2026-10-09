@@ -3,7 +3,7 @@ using UnityEngine;
 namespace ActionCode.Physics
 {
     /// <summary>
-    /// Interface used on objects able to have enter/exit collisions with an <see cref="AbstractInteractor{T}"/>.
+    /// Interface used on objects able to have enter/exit collisions with an <see cref="AbstractInteractor"/>.
     /// </summary>
     public interface ICollisionable
     {
