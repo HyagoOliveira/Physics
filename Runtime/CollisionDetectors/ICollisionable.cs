@@ -3,21 +3,10 @@ using UnityEngine;
 namespace ActionCode.Physics
 {
     /// <summary>
-    /// Interface used on objects able to have enter/exit collisions with an <see cref="AbstractDetector"/>.
+    /// Interface used on objects able to have enter/exit collisions.
     /// </summary>
     public interface ICollisionable
     {
-        /// <summary>
-        /// The local Collider.
-        /// </summary>
-        public Collider Collider { get; }
-
-        /// <summary>
-        /// Whether can collider.
-        /// </summary>
-        /// <returns></returns>
-        public bool CanCollide();
-
         /// <summary>
         /// Enters the collision using the given interactor.
         /// </summary>
