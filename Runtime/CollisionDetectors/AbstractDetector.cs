@@ -5,10 +5,10 @@ using UnityEngine;
 namespace ActionCode.Physics
 {
     /// <summary>
-    /// Abstract class used to check collisions with <see cref="ICollisionable"/> objects.
+    /// Abstract class used to detect collisions with <see cref="ICollisionable"/> objects.
     /// </summary>
     [DisallowMultipleComponent]
-    public abstract class AbstractInteractor : MonoBehaviour
+    public abstract class AbstractDetector : MonoBehaviour
     {
         [SerializeField, Tooltip("The maximum collisions allowed."), Min(1), DisableInPlayMode]
         private uint maxCollisions = 1;
