@@ -5,7 +5,8 @@ using UnityEngine;
 namespace ActionCode.Physics
 {
     /// <summary>
-    /// Component used to detect collisions with <see cref="ICollisionable"/> objects.
+    /// Component used to detect collisions with 
+    /// <see cref="ICollisionableEnter"/> and <see cref="ICollisionableExit"/> objects.
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(BoxCollider2D))]
@@ -78,11 +79,13 @@ namespace ActionCode.Physics
         private void EnterCollision(Collider2D collider)
         {
             var instance = collider.gameObject;
-            var hasCollisionable = instance.TryGetComponent(out ICollisionable collisionable);
+            var hasCollisionable =
+                instance.TryGetComponent(out ICollisionableEnter collisionable) ||
+                instance.GetComponent<ICollisionableExit>() != null;
             if (!hasCollisionable) return;
 
             collidingInstances.Add(collider);
-            collisionable.EnterCollision(transform);
+            collisionable?.EnterCollision(transform);
         }
 
         private void ExitCollision(int index)
@@ -93,7 +96,7 @@ namespace ActionCode.Physics
             // Collider may be deleted by Gameplay
             if (collider == null) return;
 
-            var hasCollisionable = collider.gameObject.TryGetComponent(out ICollisionable collisionable);
+            var hasCollisionable = collider.gameObject.TryGetComponent(out ICollisionableExit collisionable);
             if (hasCollisionable) collisionable.ExitCollision(transform);
         }
 

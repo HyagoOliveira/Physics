@@ -4,10 +4,10 @@ using UnityEngine.Events;
 namespace ActionCode.Physics
 {
     /// <summary>
-    /// Simple implementation of <see cref="ICollisionable"/> using UnityEvents.
+    /// Simple implementation of Collisionables interfaces using UnityEvents.
     /// </summary>
     [DisallowMultipleComponent]
-    public sealed class CollisionableUnityEvents : MonoBehaviour, ICollisionable
+    public sealed class CollisionableUnityEvents : MonoBehaviour, ICollisionableEnter, ICollisionableExit
     {
         public UnityEvent<Transform> OnCollisionEntered;
         public UnityEvent<Transform> OnCollisionExited;
